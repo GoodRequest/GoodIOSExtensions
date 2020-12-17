@@ -14,7 +14,7 @@ import GRCompatible
 public extension GRActive where Base: UILabel {
     
     var isTruncated: Bool {
-        return intrinsicContentSize.width > bounds.width
+        return base.intrinsicContentSize.width > base.bounds.width
     }
     
 }
