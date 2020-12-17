@@ -10,6 +10,9 @@ import Combine
 import GRCompatible
 
 @available(iOS 13.0, *)
+extension Publisher where Self: GRCompatible {}
+
+@available(iOS 13.0, *)
 extension GRActive where Base: Publisher {
     
     func combineWith<Output2: AnyObject>(_ value: Output2) -> AnyPublisher<(Base.Output, Output2), Base.Failure> {

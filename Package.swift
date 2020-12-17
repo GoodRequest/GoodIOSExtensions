@@ -47,6 +47,10 @@ let package = Package(
             name: "GoodKeychain",
             dependencies: [.target(name: "GRCompatible"), "CombineExt"],
             path: "./Sources/GoodKeychain"),
+        .target(
+        name: "Sample",
+        dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodKeychain", "GoodExtensions"],
+        path: "Sample"),        
         .testTarget(
             name: "GoodExtensionsTests",
             dependencies: ["GoodExtensions"]),

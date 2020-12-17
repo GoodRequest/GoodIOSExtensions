@@ -8,11 +8,11 @@
 #if !os(macOS)
 import UIKit
 
-protocol Instantiable {
+public protocol Instantiable {
     static func makeInstance(name: String?) -> Self
 }
 
-extension Instantiable where Self: UIViewController {
+public extension Instantiable where Self: UIViewController {
     /// Instantiates controller from storyboard.
     /// - example:
     /// `let myViewController = MyViewController.makeInstance()`

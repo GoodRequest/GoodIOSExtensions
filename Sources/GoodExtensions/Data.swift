@@ -9,6 +9,8 @@
 import Foundation
 import GRCompatible
 
+extension Data: GRCompatible {}
+
 public extension GRActive where Base == Data {
 
     var hexString: String {

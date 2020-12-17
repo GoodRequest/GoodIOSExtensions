@@ -9,7 +9,7 @@
 import MapKit
 import GRCompatible
 
-extension GRActive where Base == MKMultiPoint {
+public extension GRActive where Base == MKMultiPoint {
     
     var points: [MKMapPoint] {
         return Array(UnsafeBufferPointer(start: base.points(), count: base.pointCount))

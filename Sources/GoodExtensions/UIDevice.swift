@@ -26,10 +26,10 @@ public extension GRActive where Base: UIDevice {
 
 public struct GRDevice {
     
-    let deviceId: String
-    let deviceSystem: String
-    let deviceName: String
-    let deviceType: String
+    public let deviceId: String
+    public let deviceSystem: String
+    public let deviceName: String
+    public let deviceType: String
     
 }
 

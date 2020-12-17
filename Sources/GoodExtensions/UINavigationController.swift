@@ -9,18 +9,19 @@
 #if !os(macOS)
 
 import UIKit
+import GRCompatible
 
 // MARK: - Navigation Controller
 
-extension UINavigationController {
+public extension GRActive where Base: UINavigationController {
     
     func pushViewController(
         _ viewController: UIViewController,
         animated: Bool,
         completion: @escaping () -> Void) {
-        pushViewController(viewController, animated: animated)
+        base.pushViewController(viewController, animated: animated)
         
-        guard animated, let coordinator = transitionCoordinator else {
+        guard animated, let coordinator = base.transitionCoordinator else {
             completion()
             return
         }

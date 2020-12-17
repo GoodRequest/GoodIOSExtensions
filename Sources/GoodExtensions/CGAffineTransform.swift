@@ -7,8 +7,11 @@
 //
 
 #if !os(macOS)
+
 import UIKit
 import GRCompatible
+
+extension CGAffineTransform: GRCompatible {}
 
 public extension GRActive where Base == CGAffineTransform {
     
@@ -21,4 +24,5 @@ public extension GRActive where Base == CGAffineTransform {
     }
     
 }
+
 #endif

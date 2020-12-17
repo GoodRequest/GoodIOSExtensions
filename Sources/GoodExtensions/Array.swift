@@ -8,11 +8,9 @@
 import Foundation
 import GRCompatible
 
+extension Collection where Self: GRCompatible { }
+
 public extension GRActive where Base: Collection {
-    
-    subscript(safe index: Int) -> Base.Element? {
-        self.contains(index: index) ? base[index as! Base.Index] : nil
-    }
     
     /// Returns array of elements where between each element will be inserted element, provided in parameter.
     ///
@@ -27,16 +25,25 @@ public extension GRActive where Base: Collection {
     func contains(index: Int) -> Bool {
         return (base.startIndex..<base.endIndex).contains(index as! Base.Index)
     }
+    
 }
 
-//public extension GRActive where Base: Collection, Base.Element: Equatable {
-//    
-//    mutating func removeOrAppend(object: Base.Element) {
-//        if base.contains(object) {
-//            base.removeAll(where: { $0 == object })
-//        } else {
-//            base.append(object)
-//        }
-//    }
-//    
-//}
+public extension Array {
+    
+    subscript(safe index: Int) -> Element? {
+        self.gr.contains(index: index) ? self[index] : nil
+    }
+    
+}
+
+public extension Array where Element: Equatable {
+    
+    mutating func removeOrAppend(object: Element) {
+        if contains(object) {
+            removeAll(where: { $0 == object })
+        } else {
+            append(object)
+        }
+    }
+    
+}

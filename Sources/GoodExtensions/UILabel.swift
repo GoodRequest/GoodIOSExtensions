@@ -9,8 +9,9 @@
 #if !os(macOS)
 
 import UIKit
+import GRCompatible
 
-extension UILabel {
+public extension GRActive where Base: UILabel {
     
     var isTruncated: Bool {
         return intrinsicContentSize.width > bounds.width

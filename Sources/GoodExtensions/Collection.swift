@@ -9,6 +9,9 @@
 import Foundation
 import GRCompatible
 
+extension Swift.Optional: GRCompatible { }
+
+// TODO: Not working
 public extension GRActive where Base == Swift.Optional<Collection> {
     
     var isNilOrEmpty: Bool {

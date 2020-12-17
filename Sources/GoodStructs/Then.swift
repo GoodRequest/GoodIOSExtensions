@@ -15,7 +15,7 @@ public protocol Then {}
 
 //swiftlint:disable numbers_smell
 
-extension Then where Self: Any {
+public extension Then where Self: Any {
 
     /// Makes it available to set properties with closures just after initializing and copying the value types.
     ///
@@ -23,7 +23,7 @@ extension Then where Self: Any {
     ///       $0.origin.x = 10
     ///       $0.size.width = 100
     ///     }
-    public func with(_ block: (inout Self) throws -> Void) rethrows -> Self {
+    func with(_ block: (inout Self) throws -> Void) rethrows -> Self {
         var copy = self
         try block(&copy)
         return copy
@@ -36,7 +36,7 @@ extension Then where Self: Any {
     ///       $0.set("devxoul@gmail.com", forKey: "email")
     ///       $0.synchronize()
     ///     }
-    public func `do`(_ block: (Self) throws -> Void) rethrows {
+    func `do`(_ block: (Self) throws -> Void) rethrows {
         try block(self)
     }
 
