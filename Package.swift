@@ -21,7 +21,10 @@ let package = Package(
                  targets: ["GoodCombineExtensions"]),
         .library(
             name: "GoodKeychain",
-            targets: ["GoodKeychain"])
+            targets: ["GoodKeychain"]),
+        .library(
+            name: "GoodReactor",
+            targets: ["GoodReactor"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -44,12 +47,16 @@ let package = Package(
             dependencies: [],
             path: "./Sources/GoodStructs"),
         .target(
+            name: "GoodReactor",
+            dependencies: ["CombineExt"],
+            path: "./Sources/GoodReactor"),
+        .target(
             name: "GoodKeychain",
             dependencies: [.target(name: "GRCompatible"), "CombineExt"],
             path: "./Sources/GoodKeychain"),
         .target(
         name: "Sample",
-        dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodKeychain", "GoodExtensions"],
+        dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodKeychain", "GoodExtensions", "GoodReactor"],
         path: "Sample"),        
         .testTarget(
             name: "GoodExtensionsTests",
