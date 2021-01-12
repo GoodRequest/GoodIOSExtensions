@@ -11,10 +11,11 @@ import Combine
 import CombineExt
 
 @available(iOS 13.0, *)
-public class GoodCoordinator<Step> {
+open class GoodCoordinator<Step>: NSObject {
     
     open var cancellables: Set<AnyCancellable> = Set()
-    @Published var step: Step?
+    @Published open var step: Step?
+    
 }
 
 @available(iOS 13.0, *)
