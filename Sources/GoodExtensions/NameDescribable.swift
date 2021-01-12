@@ -16,11 +16,11 @@ public protocol NameDescribable {
 public extension GRActive where Base: NSObject {
     
     var typeName: String {
-        return String(describing: type(of: self))
+        return String(describing: type(of: base))
     }
 
     static var typeName: String {
-        return String(describing: self)
+        return String(describing: Base.self)
     }
     
 }
@@ -30,11 +30,11 @@ extension Array: GRCompatible {}
 public extension GRActive where Base: Collection {
     
     var typeName: String {
-        return String(describing: type(of: self))
+        return String(describing: type(of: base))
     }
 
     static var typeName: String {
-        return String(describing: self)
+        return String(describing: Base.self)
     }
     
 }
