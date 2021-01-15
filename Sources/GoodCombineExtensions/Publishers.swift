@@ -10,10 +10,10 @@ import Combine
 import GRCompatible
 
 @available(iOS 13.0, *)
-extension Publisher where Self: GRCompatible {}
+public extension Publisher where Self: GRCompatible {}
 
 @available(iOS 13.0, *)
-extension GRActive where Base: Publisher {
+public extension GRActive where Base: Publisher {
     
     func combineWith<Output2: AnyObject>(_ value: Output2) -> AnyPublisher<(Base.Output, Output2), Base.Failure> {
         base.compactMap { [weak value] currentValue in
@@ -43,7 +43,7 @@ extension GRActive where Base: Publisher {
 }
 
 @available(iOS 13.0, *)
-extension Publisher where Failure == Never {
+public extension Publisher where Failure == Never {
     
     func assign<Root: AnyObject>(to keyPath: ReferenceWritableKeyPath<Root, Output>, on root: Root) -> AnyCancellable {
        sink { [weak root] in

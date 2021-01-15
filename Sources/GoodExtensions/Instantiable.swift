@@ -7,44 +7,35 @@
 
 #if !os(macOS)
 import UIKit
+import GRCompatible
 
-public protocol Instantiable {
-    static func makeInstance(name: String?) -> Self
-}
-
-public extension Instantiable where Self: UIViewController {
-    /// Instantiates controller from storyboard.
-    /// - example:
-    /// `let myViewController = MyViewController.makeInstance()`
-    /// - important:
-    /// Initial controller of the same type must exists in storyboard named as controller's
-    /// class without "ViewController" suffix, otherwise will `fatalError()`.
-    /// - Returns: Instantiated view controller.
-    static func makeInstance(name: String? = nil) -> Self {
+public extension GRActive where Base: UIViewController {
+    
+    static func makeInstance(name: String? = nil) -> Base {
         var viewControllerName: String
         if let name = name {
             viewControllerName = name
         } else {
-            viewControllerName = gr.typeName
+            viewControllerName = Base.gr.typeName
         }
 
         let storyboard = UIStoryboard(name: viewControllerName, bundle: nil)
         guard let instance =
-            storyboard.instantiateInitialViewController() as? Self
+            storyboard.instantiateInitialViewController() as? Base
             ?? instantiate(storyboard: storyboard, name: viewControllerName)
             
-            else { fatalError("Could not make instance of \(String(describing: self))") }
+        else { fatalError("Could not make instance of \(String(describing: Base.self))") }
         return instance
     }
     
-    private static func instantiate(storyboard: UIStoryboard, name: String) -> Self? {
+    private static func instantiate(storyboard: UIStoryboard, name: String) -> Base? {
         if #available(iOS 13.0, *) {
-            return storyboard.instantiateViewController(identifier: name) as? Self
+            return storyboard.instantiateViewController(identifier: name) as? Base
         } else {
             return nil
         }
     }
+    
 }
 
-extension UIViewController: Instantiable {}
 #endif
