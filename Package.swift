@@ -20,8 +20,8 @@ let package = Package(
         .library(name: "GoodCombineExtensions",
                  targets: ["GoodCombineExtensions"]),
         .library(
-            name: "GoodKeychain",
-            targets: ["GoodKeychain"]),
+            name: "GoodCache",
+            targets: ["GoodCache"]),
         .library(
             name: "GoodReactor",
             targets: ["GoodReactor"])
@@ -51,12 +51,12 @@ let package = Package(
             dependencies: ["CombineExt"],
             path: "./Sources/GoodReactor"),
         .target(
-            name: "GoodKeychain",
+            name: "GoodCache",
             dependencies: [.target(name: "GRCompatible"), "CombineExt"],
-            path: "./Sources/GoodKeychain"),
+            path: "./Sources/GoodCache"),
         .target(
         name: "Sample",
-        dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodKeychain", "GoodExtensions", "GoodReactor"],
+        dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodCache", "GoodExtensions", "GoodReactor"],
         path: "Sample"),        
         .testTarget(
             name: "GoodExtensionsTests",
