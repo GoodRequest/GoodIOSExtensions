@@ -9,6 +9,7 @@
 #if !os(macOS)
 import UIKit
 import Combine
+import GRCompatible
 
 public enum GestureType {
     
@@ -59,4 +60,14 @@ public struct GesturePublisher: Publisher {
         subscriber.receive(subscription: subscription)
     }
 }
+
+@available(iOS 13.0, *)
+public extension GRActive where Base: UIView {
+    
+    func gesturePublisher(_ gestureType: GestureType) -> GesturePublisher {
+        GesturePublisher(view: base, gestureType: gestureType)
+    }
+    
+}
+
 #endif

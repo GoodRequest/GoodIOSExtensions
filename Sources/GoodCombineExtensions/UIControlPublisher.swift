@@ -9,6 +9,7 @@
 #if !os(macOS)
 import UIKit
 import Combine
+import GRCompatible
 
 @available(iOS 13.0, *)
 public struct UIControlPublisher<Control: UIControl>: Publisher {
@@ -35,4 +36,14 @@ public struct UIControlPublisher<Control: UIControl>: Publisher {
         subscriber.receive(subscription: subscription)
     }
 }
+
+@available(iOS 13.0, *)
+public extension GRActive where Base: UIControl {
+    
+    func publisher(for event: UIControl.Event) -> UIControlPublisher<UIControl> {
+        UIControlPublisher(control: base, event: event)
+    }
+    
+}
+
 #endif
