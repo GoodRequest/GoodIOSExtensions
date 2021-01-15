@@ -46,9 +46,11 @@ public class UserDefaultValue<T: Codable> {
     }
 
     public lazy var publisher: AnyPublisher<T, Never> = {
-        subject.prepend(wrappedValue)
-            .share(replay: 1)
-            .eraseToAnyPublisher()
+        Deferred {
+            self.subject
+                .prepend(self.wrappedValue)
+                .share(replay: 1)
+        }.eraseToAnyPublisher()
     }()
 
 }
