@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CombineExt
 
+@available(iOS 13.0, *)
 @propertyWrapper
 public class UserDefaultValue<T: Codable> {
 
