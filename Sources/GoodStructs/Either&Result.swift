@@ -20,7 +20,7 @@ public enum Either<L, R> {
     case right(R)
 
     /// Returns one value of single type.
-    func either<ReturnValue>(ifLeft: (L) -> ReturnValue, ifRight: (R) -> ReturnValue) -> ReturnValue {
+    public func either<ReturnValue>(ifLeft: (L) -> ReturnValue, ifRight: (R) -> ReturnValue) -> ReturnValue {
         switch self {
         case let .left(x):
             return ifLeft(x)
@@ -30,7 +30,7 @@ public enum Either<L, R> {
         }
     }
 
-    func either(ifLeft: (L) -> Void, ifRight: (R) -> Void) {
+    public func either(ifLeft: (L) -> Void, ifRight: (R) -> Void) {
         switch self {
         case let .left(x):
             ifLeft(x)
@@ -40,11 +40,11 @@ public enum Either<L, R> {
         }
     }
 
-    func map<ReturnValue>(_ transform: (R) -> ReturnValue) -> Either<L, ReturnValue> where ReturnValue: Equatable {
+    public func map<ReturnValue>(_ transform: (R) -> ReturnValue) -> Either<L, ReturnValue> where ReturnValue: Equatable {
         return flatMap { .right(transform($0)) }
     }
 
-    func map<ReturnValue>(_ transform: (R) -> ReturnValue) -> Either<L, ReturnValue> {
+    public func map<ReturnValue>(_ transform: (R) -> ReturnValue) -> Either<L, ReturnValue> {
         return flatMap { .right(transform($0)) }
     }
 
@@ -62,26 +62,26 @@ public enum Either<L, R> {
                 ifRight: transform)
     }
 
-    func mapLeft<LType>(_ transform: (L) -> LType)
+    public func mapLeft<LType>(_ transform: (L) -> LType)
         -> Either<LType, R> {
             return flatMapLeft { .left(transform($0)) }
     }
 
-    private func flatMapLeft<LType>(_ transform: (L) -> Either<LType, R>)
+    public private func flatMapLeft<LType>(_ transform: (L) -> Either<LType, R>)
         -> Either<LType, R> {
             return either(
                 ifLeft: transform,
                 ifRight: Either<LType, R>.right)
     }
 
-    func mapToNothing() -> Either<L, Nothing> {
+    public func mapToNothing() -> Either<L, Nothing> {
 
             return either(
                 ifLeft: { return Either<L, Nothing>.left($0) },
                 ifRight: { _ in return Either<L, Nothing>.right(Nothing()) })
     }
 
-    func toResult() -> GRResult<R, L> {
+    public func toResult() -> GRResult<R, L> {
         switch self {
         case let .left(error):
             return GRResult.failure(error)
@@ -91,7 +91,7 @@ public enum Either<L, R> {
         }
     }
 
-    func unwrap() throws -> R {
+    public func unwrap() throws -> R {
         switch self {
         case .right(let value):
             return value
@@ -101,7 +101,7 @@ public enum Either<L, R> {
         }
     }
 
-    func unwrapLeft() throws -> L {
+    public func unwrapLeft() throws -> L {
         switch self {
         case .left(let value):
             return value
@@ -260,19 +260,19 @@ public func ==<E, V>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
     return false
 }
 
-func !=<V: Equatable, E: Equatable>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
+public func !=<V: Equatable, E: Equatable>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
 
     return !(left == right)
 }
 
-func !=<E, V>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
+public func !=<E, V>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
     if case .loading = left, case .loading = right {
         return false
     }
     return !(left == right)
 }
 
-func zip<E, R1, R2>(_ leftResult: GRResult<R1, E>, _ rightResult: GRResult<R2, E>) -> GRResult<(R1, R2), E> {
+public func zip<E, R1, R2>(_ leftResult: GRResult<R1, E>, _ rightResult: GRResult<R2, E>) -> GRResult<(R1, R2), E> {
     if case .failure(let e) = leftResult {
         return .failure(e)
     }
