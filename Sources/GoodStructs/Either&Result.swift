@@ -67,7 +67,7 @@ public enum Either<L, R> {
             return flatMapLeft { .left(transform($0)) }
     }
 
-    public private func flatMapLeft<LType>(_ transform: (L) -> Either<LType, R>)
+    public func flatMapLeft<LType>(_ transform: (L) -> Either<LType, R>)
         -> Either<LType, R> {
             return either(
                 ifLeft: transform,
