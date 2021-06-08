@@ -4,14 +4,17 @@ import GoodExtensions
 final class GoodExtensionsTests: XCTestCase {
     
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var view: UIView!
 
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        tableView.gr.rotate(.by180)
+//        tableView.gr.rotate(.by180)
+        print(scrollView.gr.isRefreshing)
+        scrollView.refreshControl?.gr.endCurrentRefreshing()
+
         XCTAssertEqual(" Dominik ".gr.removeWhiteSpacesAndNewlines, "Dominik")
     }
 

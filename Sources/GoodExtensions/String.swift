@@ -24,4 +24,5 @@ public extension GRActive where Base == String {
     var removeDiacritics: String {
         return base.folding(options: .diacriticInsensitive, locale: .current)
     }
+
 }
