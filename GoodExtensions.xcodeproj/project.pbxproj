@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		B18F13412677479E00F7FF17 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F133E2677479D00F7FF17 /* Date.swift */; };
+		B18F13422677479E00F7FF17 /* UIRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */; };
+		B18F13432677479E00F7FF17 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F13402677479E00F7FF17 /* UIScrollView.swift */; };
 		B1D953AD2673972700EE30CE /* GesturePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* GesturePublisher.swift */; };
 		OBJ_113 /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* DemandBuffer.swift */; };
 		OBJ_114 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Sink.swift */; };
@@ -224,6 +227,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B18F133E2677479D00F7FF17 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRefreshControl.swift; sourceTree = "<group>"; };
+		B18F13402677479E00F7FF17 /* UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"GoodExtensions::GRCompatible::Product" /* GRCompatible.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GRCompatible.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"GoodExtensions::GoodCache::Product" /* GoodCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoodCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -419,6 +425,9 @@
 		OBJ_22 /* GoodExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				B18F133E2677479D00F7FF17 /* Date.swift */,
+				B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */,
+				B18F13402677479E00F7FF17 /* UIScrollView.swift */,
 				OBJ_23 /* Array.swift */,
 				OBJ_24 /* CGAffineTransform.swift */,
 				OBJ_25 /* Data.swift */,
@@ -942,14 +951,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				B18F13412677479E00F7FF17 /* Date.swift in Sources */,
 				OBJ_187 /* Array.swift in Sources */,
 				OBJ_188 /* CGAffineTransform.swift in Sources */,
 				OBJ_189 /* Data.swift in Sources */,
 				OBJ_190 /* GoodSwift.swift in Sources */,
 				OBJ_191 /* Instantiable.swift in Sources */,
 				OBJ_192 /* MKMultiPoint.swift in Sources */,
+				B18F13422677479E00F7FF17 /* UIRefreshControl.swift in Sources */,
 				OBJ_193 /* NSAttributedString.swift in Sources */,
 				OBJ_194 /* NSCollectionLayoutGroup.swift in Sources */,
+				B18F13432677479E00F7FF17 /* UIScrollView.swift in Sources */,
 				OBJ_195 /* NameDescribable.swift in Sources */,
 				OBJ_196 /* SFSafariViewController.swift in Sources */,
 				OBJ_197 /* String.swift in Sources */,

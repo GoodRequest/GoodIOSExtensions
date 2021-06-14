@@ -10,7 +10,7 @@ import GRCompatible
 
 public extension GRActive where Base == UIRefreshControl {
 
-    func endCurrentRefreshing() {
+    func endRefreshing() {
         if base.isRefreshing {
             base.endRefreshing()
         }

@@ -8,6 +8,8 @@
 import Foundation
 import GRCompatible
 
+extension Date: GRCompatible {}
+
 public extension GRActive where Base == Date {
 
     func adding(number: Int, of component: Calendar.Component) -> Date {
