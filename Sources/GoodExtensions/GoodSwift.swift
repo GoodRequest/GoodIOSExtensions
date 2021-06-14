@@ -118,7 +118,7 @@ public extension GRActive where Base: UIView {
 
     enum Rotate {
 
-        case by0, by90, by180, by270
+        case by0, by90, by180, by270, by180negative
 
         var rotationValue: Double {
             switch self {
@@ -130,6 +130,8 @@ public extension GRActive where Base: UIView {
                 return .pi
             case .by270:
                 return .pi + .pi / 2
+            case .by180negative:
+                return .pi * -2
             }
         }
 
