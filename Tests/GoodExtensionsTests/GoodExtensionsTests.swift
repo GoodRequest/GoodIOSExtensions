@@ -1,5 +1,8 @@
 import XCTest
 import GoodExtensions
+#if !os(macOS)
+
+import UIKit
 
 final class GoodExtensionsTests: XCTestCase {
     
@@ -22,3 +25,5 @@ final class GoodExtensionsTests: XCTestCase {
         ("testExample", testExample),
     ]
 }
+
+#endif

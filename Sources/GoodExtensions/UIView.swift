@@ -75,11 +75,11 @@ public extension GRActive where Base: UIView {
         animator.addAnimations {
             switch animationType {
             case .identity:
-                base.transform = .identity
+                self.base.transform = .identity
             case .show:
-                base.alpha = 1.0
+                self.base.alpha = 1.0
             case .hide:
-                base.alpha = 0.0
+                self.base.alpha = 0.0
             }
         }
         

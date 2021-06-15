@@ -193,7 +193,7 @@ public extension GRActive where Base: UICollectionView {
         }
 
         coordinator.animate(alongsideTransition: { _ in
-            base.deselectItem(at: selectedIndexPath, animated: true)
+            self.base.deselectItem(at: selectedIndexPath, animated: true)
         }, completion: { [weak base] (context) in
             if context.isCancelled {
                 base?.selectItem(at: selectedIndexPath, animated: false, scrollPosition: UICollectionView.ScrollPosition(rawValue: 0))
@@ -235,7 +235,7 @@ public extension GRActive where Base: UITableView {
         }
 
         coordinator.animate(alongsideTransition: { _ in
-            base.deselectRow(at: selectedIndexPath, animated: true)
+            self.base.deselectRow(at: selectedIndexPath, animated: true)
         }, completion: { [weak base] (context) in
             if context.isCancelled {
                 base?.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
