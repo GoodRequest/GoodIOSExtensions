@@ -90,4 +90,16 @@ public extension GRActive where Base: UIView {
     
 }
 
+// MARK: - Props
+
+public extension GRActive where Base: UIView {
+
+    var circleMaskImage: UIView {
+        base.clipsToBounds = true
+        base.layer.cornerRadius = base.frame.width / 2.0
+        return base
+    }
+
+}
+
 #endif
