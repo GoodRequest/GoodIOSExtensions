@@ -118,20 +118,28 @@ public extension GRActive where Base: UIView {
 
     enum Rotate {
 
-        case by0, by90, by180, by270, by180negative
+        case by0
+        case by90
+        case by180
+        case by270
+        case custom(Double)
 
         var rotationValue: Double {
             switch self {
             case .by0:
                 return 0.0
+
             case .by90:
                 return .pi / 2
+
             case .by180:
                 return .pi
+
             case .by270:
                 return .pi + .pi / 2
-            case .by180negative:
-                return .pi * -2
+
+            case .custom(let value):
+                return value
             }
         }
 
@@ -139,9 +147,17 @@ public extension GRActive where Base: UIView {
 
     /// Rotates the view by specified angle.
     func rotate(_ rotateBy: Rotate) {
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .beginFromCurrentState, animations: { [weak base] in
-            base?.transform = CGAffineTransform(rotationAngle: CGFloat(rotateBy.rotationValue))
-        }, completion: nil)
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0.0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 0.5,
+            options: .beginFromCurrentState,
+            animations: { [weak base] in
+                base?.transform = CGAffineTransform(rotationAngle: CGFloat(rotateBy.rotationValue))
+            },
+            completion: nil
+        )
     }
 
 }
