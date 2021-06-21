@@ -25,7 +25,11 @@ public extension GRActive where Base: Collection {
     func contains(index: Int) -> Bool {
         return (base.startIndex..<base.endIndex).contains(index as! Base.Index)
     }
-    
+
+    var hasItems: Bool {
+        return !base.isEmpty
+    }
+
 }
 
 public extension GRActive where Base: Collection {
@@ -133,12 +137,4 @@ public extension Array {
         swapAt(index, otherIndex)
     }
     
-}
-
-public extension Array {
-
-    var hasItems: Bool {
-        return !self.isEmpty
-    }
-
 }

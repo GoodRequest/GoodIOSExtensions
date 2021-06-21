@@ -155,8 +155,7 @@ public extension GRActive where Base: UIView {
             options: .beginFromCurrentState,
             animations: { [weak base] in
                 base?.transform = CGAffineTransform(rotationAngle: CGFloat(rotateBy.rotationValue))
-            },
-            completion: nil
+            }
         )
     }
 

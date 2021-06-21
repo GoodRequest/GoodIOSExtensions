@@ -9,13 +9,20 @@
 import Foundation
 
 @propertyWrapper
-struct LossyCodableArray<Element>: Equatable where Element: Equatable {
+public struct LossyCodableArray<Element>: Equatable where Element: Equatable {
 
-    var elements: [Element]
+    public var elements: [Element]
 
-    var wrappedValue: [Element] {
-        get { elements }
-        set { elements = newValue }
+    public var wrappedValue: [Element] {
+
+        get {
+            elements
+        }
+
+        set {
+            elements = newValue
+        }
+
     }
 
 }
@@ -33,7 +40,7 @@ extension LossyCodableArray: Decodable where Element: Decodable & Equatable {
 
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         if let container = try? decoder.singleValueContainer() {
             let wrappers = try container.decode([ElementWrapper].self)
             elements = wrappers.compactMap(\.element)
@@ -46,10 +53,12 @@ extension LossyCodableArray: Decodable where Element: Decodable & Equatable {
 
 extension LossyCodableArray: Encodable where Element: Encodable {
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.unkeyedContainer()
 
-        for element in elements { try? container.encode(element) }
+        for element in elements {
+            try? container.encode(element)
+        }
     }
 
 }
