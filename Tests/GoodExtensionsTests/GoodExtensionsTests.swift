@@ -2,7 +2,7 @@ import XCTest
 import GoodExtensions
 
 final class GoodExtensionsTests: XCTestCase {
-    
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var view: UIView!
@@ -19,6 +19,6 @@ final class GoodExtensionsTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

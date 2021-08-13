@@ -12,7 +12,7 @@ import UIKit
 import GRCompatible
 
 public extension GRActive where Base: UICollectionViewCell {
-    
+
     func animate(selected: Bool) {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.2,
@@ -23,7 +23,7 @@ public extension GRActive where Base: UICollectionViewCell {
             },
             completion: nil)
     }
-    
+
 }
 
 #endif

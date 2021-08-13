@@ -57,9 +57,9 @@ let package = Package(
         .target(
         name: "Sample",
         dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodCache", "GoodExtensions", "GoodReactor"],
-        path: "Sample"),        
+        path: "Sample"),
         .testTarget(
             name: "GoodExtensionsTests",
-            dependencies: ["GoodExtensions"]),
+            dependencies: ["GoodExtensions"])
     ]
 )

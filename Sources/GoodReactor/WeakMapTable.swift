@@ -16,10 +16,12 @@ final public class WeakMapTable<Key, Value> where Key: AnyObject {
   private let lock = NSRecursiveLock()
 
   // MARK: Initializing
+
   public init() {
   }
 
   // MARK: Getting and Setting Values
+
   public func value(forKey key: Key) -> Value? {
     let weakKey = Weak(key)
 
@@ -50,7 +52,7 @@ final public class WeakMapTable<Key, Value> where Key: AnyObject {
     return defaultValue
   }
 
-    //swiftlint:disable force_cast
+    // swiftlint:disable force_cast
   public func forceCastedValue<T>(forKey key: Key, default: @autoclosure () -> T) -> T {
     return self.value(forKey: key, default: `default`() as! Value) as! T
   }
@@ -74,6 +76,7 @@ final public class WeakMapTable<Key, Value> where Key: AnyObject {
   }
 
   // MARK: Getting and Setting Values without Locking
+
   private func unsafeValue(forKey key: Weak<Key>) -> Value? {
     return self.dictionary[key]
   }
@@ -86,8 +89,8 @@ final public class WeakMapTable<Key, Value> where Key: AnyObject {
     }
   }
 
-
   // MARK: Dealloc Hook
+
   private var deallocHookKey: Void?
 
   private func installDeallocHook(to key: Key) {
@@ -105,7 +108,9 @@ final public class WeakMapTable<Key, Value> where Key: AnyObject {
 }
 
 // MARK: - Weak
+
 private final class Weak<T>: Hashable where T: AnyObject {
+
   private let objectHashValue: Int
   weak var object: T?
 
@@ -124,7 +129,9 @@ private final class Weak<T>: Hashable where T: AnyObject {
 }
 
 // MARK: - DeallocHook
+
 private final class DeallocHook {
+
   private let handler: () -> Void
 
   init(handler: @escaping () -> Void) {
@@ -135,4 +142,3 @@ private final class DeallocHook {
     self.handler()
   }
 }
-

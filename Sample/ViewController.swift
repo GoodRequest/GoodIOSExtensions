@@ -16,13 +16,14 @@ import GoodCache
 
 @available(iOS 13.0, *)
 class ViewController: UIViewController {
-    
+
     @IBOutlet weak var tableView: UITableView!
-    
+
     @IBOutlet weak var viewc: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
 //        let result = GRResult<Int, Int>.success(1)
 //        
 //        let pole: Collection<Int>? = [1]
@@ -35,6 +36,4 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
 }
-

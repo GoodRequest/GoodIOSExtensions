@@ -11,65 +11,65 @@ import GRCompatible
 extension Collection where Self: GRCompatible { }
 
 public extension GRActive where Base: Collection {
-    
+
     /// Returns array of elements where between each element will be inserted element, provided in parameter.
     ///
     /// - returns: list separated by element in parameter
     func separated(by element: Base.Element) -> [Base.Element] {
         return Array(base.map { [$0] }.joined(separator: [element]))
     }
-    
+
     /// Returns true if array contains item with specified index, otherwise returns false.
     ///
     /// - returns: true or false whether the array contains specified index.
     func contains(index: Int) -> Bool {
         return (base.startIndex..<base.endIndex).contains(index as! Base.Index)
     }
-    
+
 }
 
 public extension GRActive where Base: Collection {
-    
-    func removingOrAppending<Element: Equatable>(object: Element) -> Base where Base == Array<Element> {
+
+    func removingOrAppending<Element: Equatable>(object: Element) -> Base where Base == [Element] {
         var muttableBase = base
         muttableBase.removeOrAppend(object: object)
         return muttableBase
     }
-    
-    func joinNonNil(separator: String = "") -> String where Base == Array<String?> {
+
+    func joinNonNil(separator: String = "") -> String where Base == [String?] {
         return base.compactMap { $0 }.joined(separator: separator)
     }
-    
-    func chunked<Element: Strideable>(into size: Int) -> [[Element]] where Base == Array<Element> {
+
+    func chunked<Element: Strideable>(into size: Int) -> [[Element]] where Base == [Element] {
         return base.chunked(into: size)
     }
-    
-    func removedDuplicates<Element: Equatable>() -> [Element] where Base == Array<Element> {
+
+    func removedDuplicates<Element: Equatable>() -> [Element] where Base == [Element] {
         var muttableArray = base
         let filteredArray = muttableArray.removeDuplicates()
         return filteredArray
     }
-    
-    func prepending<Element: Equatable>(_ newElement: Element) -> [Element] where Base == Array<Element> {
+
+    func prepending<Element: Equatable>(_ newElement: Element) -> [Element] where Base == [Element] {
         var muttableArray = base
         muttableArray.insert(newElement, at: 0)
         return muttableArray
     }
-    
-    func swaped<Element: Equatable>(from startIndex: Base.Index, to endIndex: Base.Index) -> [Element] where Base == Array<Element> {
+
+    func swaped<Element: Equatable>(from startIndex: Base.Index, to endIndex: Base.Index) -> [Element] where Base == [Element] {
         var muttableArray = base
         muttableArray.swap(from: startIndex, to: endIndex)
         return muttableArray
     }
-    
+
 }
 
 public extension Array {
-    
+
     subscript(safe index: Int) -> Element? {
         self.gr.contains(index: index) ? self[index] : nil
     }
-    
+
     @available(*, deprecated, message: "This should not be called couse it's muttable and will be private in future versions.")
     mutating func removeOrAppend(object: Element) where Element: Equatable {
         if self.contains(object) {
@@ -78,14 +78,14 @@ public extension Array {
             append(object)
         }
     }
-    
+
     @available(*, deprecated, message: "This should not be called couse it's muttable and will be private in future versions.")
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
- 
+
     /// SwifterSwift: Remove all duplicate elements from Array.
     ///
     ///        [1, 2, 2, 3, 4, 5].removeDuplicates() -> [1, 2, 3, 4, 5]
@@ -103,7 +103,7 @@ public extension Array {
         }
         return self
     }
-    
+
     /// https://github.com/SwifterSwift/SwifterSwift/blob/master
 
     /// SwifterSwift: Insert an element at the beginning of array.
@@ -116,7 +116,7 @@ public extension Array {
     mutating func prepend(_ newElement: Element) where Element: Equatable {
         insert(newElement, at: 0)
     }
-    
+
     /// SwifterSwift: Safely swap values at given index positions.
     ///
     ///        [1, 2, 3, 4, 5].safeSwap(from: 3, to: 0) -> [4, 2, 3, 1, 5]
@@ -132,6 +132,5 @@ public extension Array {
         guard startIndex..<endIndex ~= otherIndex else { return }
         swapAt(index, otherIndex)
     }
-    
-}
 
+}

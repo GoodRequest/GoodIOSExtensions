@@ -104,7 +104,7 @@ public extension UIView {
 }
 
 public extension GRActive where Base: UIView {
-    
+
     /// Animates shake with view
     func shakeView(duration: CFTimeInterval = 0.02, repeatCount: Float = 8.0, offset: CGFloat = 5.0) {
         let animation = CABasicAnimation(keyPath: "position")

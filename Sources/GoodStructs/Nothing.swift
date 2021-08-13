@@ -17,6 +17,7 @@ public struct Nothing: Codable, Equatable {
 }
 
 // MARK: - Error
+
 public struct NothingError: Error {
 
 }

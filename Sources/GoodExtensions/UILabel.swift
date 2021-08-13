@@ -12,11 +12,11 @@ import UIKit
 import GRCompatible
 
 public extension GRActive where Base: UILabel {
-    
+
     var isTruncated: Bool {
         return base.intrinsicContentSize.width > base.bounds.width
     }
-    
+
 }
 
 #endif

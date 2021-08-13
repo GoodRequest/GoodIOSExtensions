@@ -9,6 +9,7 @@
 import Foundation
 
 // MARK: Either represents a value of one of two possible types (a disjoint union).
+
 /// Instances of Either are either an instance of Left or Right.
 /// A common use of Either is as an alternative to Option for dealing with possible missing values,
 /// or option to return multiple types from functions.
@@ -204,7 +205,9 @@ public enum GRResult<V, E> {
 }
 
 enum EitherResultError: Error {
+
     case unwrap
+
 }
 
 extension Either: Equatable where L: Equatable, R: Equatable {

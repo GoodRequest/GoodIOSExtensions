@@ -15,22 +15,22 @@ import GRCompatible
 // MARK: - Maps
 
 public extension GRActive where Base: UIAlertController {
-    
+
     static func create(title: String? = nil, message: String? = nil, cancelString: String, wazeTitle: String, googleTitle: String, appleTitle: String, coordinate: CLLocationCoordinate2D, name: String?, from: Any? = nil) -> UIAlertController {
         let controller = UIAlertController.gr.create(title: title, message: message, preferredStyle: .actionSheet, from: from)
-        
+
         controller.addWazeAction(coordinate: coordinate, title: wazeTitle)
         controller.addGoogleMapsAction(coordinate: coordinate, title: googleTitle)
         controller.addAppleMapsAction(coordinate: coordinate, name: name, title: appleTitle)
-        
+
         controller.addAction(UIAlertAction(title: cancelString, style: .cancel, handler: nil))
-        
+
         return controller
     }
-    
+
     static func create(title: String? = nil, message: String? = nil, preferredStyle: UIAlertController.Style, from: Any? = nil) -> UIAlertController {
         let controller = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
-        
+
         if let button = from as? UIButton {
             controller.popoverPresentationController?.sourceView = button
             controller.popoverPresentationController?.sourceRect = button.accessibilityFrame
@@ -40,14 +40,14 @@ public extension GRActive where Base: UIAlertController {
         } else if let barButtonItem = from as? UIBarButtonItem {
             controller.popoverPresentationController?.barButtonItem = barButtonItem
         }
-        
+
         return controller
     }
-    
+
 }
 
 extension UIAlertController {
-    
+
     fileprivate func addWazeAction(coordinate: CLLocationCoordinate2D, title: String) {
         if UIApplication.shared.canOpenURL(URL(string: "waze://")!) {
             addAction(UIAlertAction(title: title, style: .default, handler: { _ in
@@ -55,7 +55,7 @@ extension UIAlertController {
             }))
         }
     }
-    
+
     fileprivate func addGoogleMapsAction(coordinate: CLLocationCoordinate2D, title: String) {
         if UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!) {
             addAction(UIAlertAction(title: title, style: .default, handler: { _ in
@@ -63,17 +63,17 @@ extension UIAlertController {
             }))
         }
     }
-    
+
     fileprivate func addAppleMapsAction(coordinate: CLLocationCoordinate2D, name: String?, title: String) {
         if UIApplication.shared.canOpenURL(URL(string: "maps://")!) {
             addAction(UIAlertAction(title: title, style: .default, handler: { _ in
                 let item = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
-                item.name = name;
+                item.name = name
                 item.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
             }))
         }
     }
-    
+
 }
 
 #endif

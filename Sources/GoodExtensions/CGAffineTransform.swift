@@ -14,7 +14,7 @@ import GRCompatible
 extension CGAffineTransform: GRCompatible {}
 
 public extension GRActive where Base == CGAffineTransform {
-    
+
     static func create(scale: CGFloat, translation: CGPoint, anchorPoint: CGPoint = .zero, for view: UIView) -> CGAffineTransform {
         view.layer.anchorPoint = anchorPoint
         let scale = scale != 0 ? scale : CGFloat.leastNonzeroMagnitude
@@ -22,7 +22,7 @@ public extension GRActive where Base == CGAffineTransform {
         let translationY = 1 / scale * (anchorPoint.y - 0.5) * (view.bounds.height - translation.y * 2)
         return CGAffineTransform(scaleX: scale, y: scale).translatedBy(x: translationX, y: translationY)
     }
-    
+
 }
 
 #endif

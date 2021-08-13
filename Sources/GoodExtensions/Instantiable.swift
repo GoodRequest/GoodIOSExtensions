@@ -10,7 +10,7 @@ import UIKit
 import GRCompatible
 
 public extension GRActive where Base: UIViewController {
-    
+
     static func makeInstance(name: String? = nil) -> Base {
         var viewControllerName: String
         if let name = name {
@@ -23,11 +23,11 @@ public extension GRActive where Base: UIViewController {
         guard let instance =
             storyboard.instantiateInitialViewController() as? Base
             ?? instantiate(storyboard: storyboard, name: viewControllerName)
-            
+
         else { fatalError("Could not make instance of \(String(describing: Base.self))") }
         return instance
     }
-    
+
     private static func instantiate(storyboard: UIStoryboard, name: String) -> Base? {
         if #available(iOS 13.0, *) {
             return storyboard.instantiateViewController(identifier: name) as? Base
@@ -35,7 +35,7 @@ public extension GRActive where Base: UIViewController {
             return nil
         }
     }
-    
+
 }
 
 #endif
