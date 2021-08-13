@@ -27,11 +27,13 @@ extension DataRequest {
     ///                          status code. `[.head]` by default.
     ///
     /// - Returns:               The `DataResponsePublisher`.
-    func goodify<T: GRDecodable>(type: T.Type = T.self,
-                                 queue: DispatchQueue = .main,
-                                 preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
-                                 emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
-                                 emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods) -> AnyPublisher<T, AFError> {
+    func goodify<T: GRDecodable>(
+        type: T.Type = T.self,
+        queue: DispatchQueue = .main,
+        preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
+        emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
+        emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods
+    ) -> AnyPublisher<T, AFError> {
         log(type: type)
         return validate()
             .publishDecodable(type: T.self, decoder: T.decoder)
@@ -53,11 +55,13 @@ extension DataRequest {
     ///                          status code. `[.head]` by default.
     ///
     /// - Returns:               The `DataResponsePublisher`.
-    func goodify<T: GRDecodable>(type: T.Type = T.self,
-                                 queue: DispatchQueue = .main,
-                                 preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
-                                 emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
-                                 emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods) -> AnyPublisher<[T], AFError> {
+    func goodify<T: GRDecodable>(
+        type: T.Type = T.self,
+        queue: DispatchQueue = .main,
+        preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
+        emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
+        emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods
+    ) -> AnyPublisher<[T], AFError> {
         log(type: type)
         return validate()
             .publishDecodable(type: [T].self, decoder: T.decoder)
@@ -83,11 +87,13 @@ extension DownloadRequest {
     ///                          status code. `[.head]` by default.
     ///
     /// - Returns:               The `DataResponsePublisher`.
-    func goodify<T: Decodable>(type: T.Type = T.self,
-                                 queue: DispatchQueue = .main,
-                                 preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
-                                 emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
-                                 emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods) -> AnyPublisher<URL, AFError> {
+    func goodify<T: Decodable>(
+        type: T.Type = T.self,
+        queue: DispatchQueue = .main,
+        preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
+        emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
+        emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods
+    ) -> AnyPublisher<URL, AFError> {
         log()
         return validate()
             .publishURL()

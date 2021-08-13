@@ -12,6 +12,7 @@ extension Encodable {
 
     func jsonDictionary(encoder: JSONEncoder) -> [String: Any]? {
         guard let data = try? encoder.encode(self) else { return nil }
+
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
     }
 
@@ -48,6 +49,7 @@ extension GREncodable {
         let encoder = _encoder ?? JSONEncoder()
         encoder.keyEncodingStrategy = keyEncodingStrategy
         encoder.dateEncodingStrategy = dateEncodingStrategy
+
         return encoder
     }
 
@@ -67,6 +69,7 @@ extension GREncodable {
 
     var jsonDictionary: [String: Any]? {
         guard let data = try? encoder.encode(self) else { return nil }
+        
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
     }
 
@@ -103,6 +106,7 @@ extension GRDecodable {
         let decoder = _decoder ?? JSONDecoder()
         decoder.keyDecodingStrategy = keyDecodingStrategy
         decoder.dateDecodingStrategy = dateDecodingStrategy
+
         return decoder
     }
 

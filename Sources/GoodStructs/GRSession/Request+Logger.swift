@@ -41,6 +41,7 @@ public func logVerbose(_ text: String) {
         print(text)
     }
 }
+
 extension URLRequest {
 
     public static var logLevel = GoodSwiftLogLevel.verbose
@@ -58,14 +59,17 @@ extension DataRequest {
 
         response(completionHandler: { (response: AFDataResponse<Data?>) in
             print("")
-            if let url = response.request?.url?.absoluteString.removingPercentEncoding, let method = response.request?.httpMethod {
+            if let url = response.request?.url?.absoluteString.removingPercentEncoding,
+               let method = response.request?.httpMethod {
                 if response.error == nil {
                     logInfo("🚀 \(method) \(url)")
                 } else {
                     logError("🚀 \(method) \(url)")
                 }
             }
-            if let body = response.request?.httpBody, let string = String(data: body, encoding: String.Encoding.utf8), !string.isEmpty {
+            if let body = response.request?.httpBody,
+               let string = String(data: body, encoding: String.Encoding.utf8),
+               !string.isEmpty {
                 logVerbose("📦 \(string)")
             }
             if let response = response.response {
@@ -77,7 +81,9 @@ extension DataRequest {
                     logInfo("❌ \(response.statusCode)")
                 }
             }
-            if let data = response.data, let string = String(data: data, encoding: String.Encoding.utf8), !string.isEmpty {
+            if let data = response.data,
+               let string = String(data: data, encoding: String.Encoding.utf8),
+               !string.isEmpty {
                 logVerbose("📦 \(string)")
 
                 do {
@@ -101,11 +107,25 @@ extension DataRequest {
 extension DataResponse {
 
     func response<T>(withValue value: T) -> DataResponse<T, AFError> {
-        return DataResponse<T, AFError>(request: request, response: response, data: data, metrics: .none, serializationDuration: 30, result: AFResult<T>.success(value))
+        return DataResponse<T, AFError>(
+            request: request,
+            response: response,
+            data: data,
+            metrics: .none,
+            serializationDuration: 30,
+            result: AFResult<T>.success(value)
+        )
     }
 
     func response<T>(withError error: AFError) -> DataResponse<T, AFError> {
-        return DataResponse<T, AFError>(request: request, response: response, data: data, metrics: .none, serializationDuration: 30, result: AFResult<T>.failure(error))
+        return DataResponse<T, AFError>(
+            request: request,
+            response: response,
+            data: data,
+            metrics: .none,
+            serializationDuration: 30,
+            result: AFResult<T>.failure(error)
+        )
     }
 
 }
@@ -121,14 +141,17 @@ extension DownloadRequest {
 
         response(completionHandler: { (response: AFDownloadResponse<URL?>) in
             print("")
-            if let url = response.request?.url?.absoluteString.removingPercentEncoding, let method = response.request?.httpMethod {
+            if let url = response.request?.url?.absoluteString.removingPercentEncoding,
+               let method = response.request?.httpMethod {
                 if response.error == nil {
                     logInfo("🚀 \(method) \(url)")
                 } else {
                     logError("🚀 \(method) \(url)")
                 }
             }
-            if let body = response.request?.httpBody, let string = String(data: body, encoding: String.Encoding.utf8), !string.isEmpty {
+            if let body = response.request?.httpBody,
+               let string = String(data: body, encoding: String.Encoding.utf8),
+               !string.isEmpty {
                 logVerbose("📦 \(string)")
             }
             if let response = response.response {

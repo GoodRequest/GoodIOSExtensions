@@ -66,7 +66,10 @@ class GRSession<T: GREndpointManager> {
         switch endpoint.queryParameters {
         case .left(let params)?:
             let endpointURL = try? endpoint.asURL(baseURL: base ?? baseURL)
-            let urlComponent = NSURLComponents(url: endpointURL ?? URL(fileURLWithPath: ""), resolvingAgainstBaseURL: false)
+            let urlComponent = NSURLComponents(
+                url: endpointURL ?? URL(fileURLWithPath: ""),
+                resolvingAgainstBaseURL: false
+            )
 
             urlComponent?.queryItems = params.map {
                 URLQueryItem(name: $0.0, value: String(describing: $0.1))
@@ -75,7 +78,10 @@ class GRSession<T: GREndpointManager> {
 
         case .right(let encodable)?:
             let endpointURL = try? endpoint.asURL(baseURL: base ?? baseURL)
-            let urlComponent = NSURLComponents(url: endpointURL ?? URL(fileURLWithPath: ""), resolvingAgainstBaseURL: false)
+            let urlComponent = NSURLComponents(
+                url: endpointURL ?? URL(fileURLWithPath: ""),
+                resolvingAgainstBaseURL: false
+            )
 
             urlComponent?.queryItems = encodable.jsonDictionary?.map {
                 let (key, value) = $0
