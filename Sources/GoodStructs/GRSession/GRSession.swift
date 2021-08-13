@@ -71,9 +71,7 @@ class GRSession<T: GREndpointManager> {
                 resolvingAgainstBaseURL: false
             )
 
-            urlComponent?.queryItems = params.map {
-                URLQueryItem(name: $0.0, value: String(describing: $0.1))
-            }
+            urlComponent?.queryItems = params.map { URLQueryItem(name: $0.0, value: String(describing: $0.1)) }
             path = urlComponent?.url
 
         case .right(let encodable)?:
@@ -89,6 +87,7 @@ class GRSession<T: GREndpointManager> {
             }
 
             path = urlComponent?.url
+            
         default: break
         }
 
@@ -98,6 +97,7 @@ class GRSession<T: GREndpointManager> {
 
         case .right(let encodable)?:
             bodyData = encodable.jsonDictionary
+
         default: break
         }
 
