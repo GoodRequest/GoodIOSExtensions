@@ -25,7 +25,11 @@ public extension GRActive where Base: Collection {
     func contains(index: Int) -> Bool {
         return (base.startIndex..<base.endIndex).contains(index as! Base.Index)
     }
-    
+
+    var hasItems: Bool {
+        return !base.isEmpty
+    }
+
 }
 
 public extension GRActive where Base: Collection {
@@ -78,7 +82,7 @@ public extension Array {
             append(object)
         }
     }
-    
+
     @available(*, deprecated, message: "This should not be called couse it's muttable and will be private in future versions.")
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
@@ -134,4 +138,3 @@ public extension Array {
     }
     
 }
-
