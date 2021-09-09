@@ -6,6 +6,8 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
+#if !os(macOS)
+
 import Foundation
 import Combine
 import CombineExt
@@ -221,3 +223,4 @@ extension GoodReactor where Action == Mutation {
     }
 }
 
+#endif
