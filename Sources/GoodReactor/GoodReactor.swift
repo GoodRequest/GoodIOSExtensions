@@ -6,19 +6,22 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
+#if !os(macOS)
+
 import Foundation
 import Combine
 import CombineExt
+import UIKit
 
 @available(iOS 13.0, *)
 open class GoodCoordinator<Step>: NSObject {
     
     open var cancellables: Set<AnyCancellable> = Set()
-    open let parentCoordinator: Coordinator<AppStep>?
+    public let parentCoordinator: GoodCoordinator<Step>?
     open var navigationController: UINavigationController?
     @Published open var step: Step?
 
-    public init(parentCoordinator: Coordinator<AppStep>? = nil, navigationController: UINavigationController? = nil) {
+    public init(parentCoordinator: GoodCoordinator<Step>? = nil, navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
         self.parentCoordinator = parentCoordinator
     }
@@ -220,3 +223,4 @@ extension GoodReactor where Action == Mutation {
     }
 }
 
+#endif
