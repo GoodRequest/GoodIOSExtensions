@@ -1,5 +1,11 @@
 import XCTest
 import GoodExtensions
+import GoodRequestManager
+import Alamofire
+
+#if !os(macOS)
+
+import UIKit
 
 final class GoodExtensionsTests: XCTestCase {
     
@@ -12,6 +18,7 @@ final class GoodExtensionsTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         tableView.gr.rotate(.by180)
+        
         XCTAssertEqual(" Dominik ".gr.removeWhiteSpacesAndNewlines, "Dominik")
     }
 
@@ -19,3 +26,5 @@ final class GoodExtensionsTests: XCTestCase {
         ("testExample", testExample),
     ]
 }
+
+#endif

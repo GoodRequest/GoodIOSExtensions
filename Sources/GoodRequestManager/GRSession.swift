@@ -74,19 +74,5 @@ public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Ba
                                encoding: endpoint.encoding,
                                headers: endpoint.headers)
     }
-    
-//    public func uploadWithMultipart(endpoint: T, baseURL: String, data: Data, filename: String, progressPublisher: PassthroughSubject<ProgressResponse, AFError>) -> UploadRequest {
-//        return session.upload(multipartFormData: { formData in
-//            formData.append(
-//                data,
-//                withName: "upload",
-//                fileName: filename,
-//                mimeType: "image/jpeg")},
-//                              to: EndpointConvertible(endpoint: endpoint, baseURL: baseURL),
-//                              method: endpoint.method,
-//                              headers: endpoint.headers).uploadProgress(closure: { progress in
-//                                progressPublisher.send(ProgressResponse(value: progress.fractionCompleted))
-//                              })
-//    }
-    
+
 }

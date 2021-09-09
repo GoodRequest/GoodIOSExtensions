@@ -8,9 +8,13 @@
 import Foundation
 import Alamofire
 import Combine
+import GRCompatible
 
-extension DataRequest {
+extension DataRequest: GRCompatible {}
 
+@available(iOS 13, *)
+public extension GRActive where Base == DataRequest {
+    
     /// Creates a `DataResponsePublisher` for this instance and uses a `DecodableResponseSerializer` to serialize the
     /// response.
     ///
@@ -26,22 +30,22 @@ extension DataRequest {
     ///                          status code. `[.head]` by default.
     ///
     /// - Returns:               The `DataResponsePublisher`.
-    public func goodify<T: GRDecodable>(type: T.Type = T.self,
+    func goodify<T: GRDecodable>(type: T.Type = T.self,
                                  queue: DispatchQueue = .main,
                                  preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
                                  emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
                                  emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods) -> AnyPublisher<T, AFError> {
-        log(type: type)
-
+        base.gr.log(type: type)
+        
         let serializer = DecodableResponseSerializer<T>(dataPreprocessor: preprocessor,
-                                                     decoder: T.decoder,
-                                                     emptyResponseCodes: emptyResponseCodes,
-                                                     emptyRequestMethods: emptyResponseMethods)
-        return validate()
+                                                        decoder: T.decoder,
+                                                        emptyResponseCodes: emptyResponseCodes,
+                                                        emptyRequestMethods: emptyResponseMethods)
+        return base.validate()
             .publishResponse(using: serializer, on: queue)
             .value()
     }
-
+    
     /// Creates a `DataResponsePublisher` for this instance and uses a `DecodableResponseSerializer` to serialize the
     /// response.
     ///
@@ -57,22 +61,22 @@ extension DataRequest {
     ///                          status code. `[.head]` by default.
     ///
     /// - Returns:               The `DataResponsePublisher`.
-    public func goodify<T: GRDecodable>(type: T.Type = T.self,
-                                 queue: DispatchQueue = .main,
-                                 preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
-                                 emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
-                                 emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods) -> AnyPublisher<[T], AFError> {
-        log(type: type)
-
+    func goodify<T: GRDecodable>(type: T.Type = T.self,
+                                        queue: DispatchQueue = .main,
+                                        preprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
+                                        emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
+                                        emptyResponseMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods) -> AnyPublisher<[T], AFError> {
+        base.gr.log(type: type)
+        
         let serializer = DecodableResponseSerializer<[T]>(dataPreprocessor: preprocessor,
-                                                     decoder: T.decoder,
-                                                     emptyResponseCodes: emptyResponseCodes,
-                                                     emptyRequestMethods: emptyResponseMethods)
-        return validate()
+                                                          decoder: T.decoder,
+                                                          emptyResponseCodes: emptyResponseCodes,
+                                                          emptyRequestMethods: emptyResponseMethods)
+        return base.validate()
             .publishResponse(using: serializer, on: queue)
             .value()
     }
-
+    
 }
 
 /// Log level enum
@@ -86,39 +90,39 @@ public enum GoodSwiftLogLevel {
 
 /// Functions for printing in each log level.
 public func logError(_ text: String) {
-    guard DataRequest.logLevel != .none else { return }
-
+    guard DataRequest.gr.logLevel != .none else { return }
+    
     print(text)
 }
 
 public func logInfo(_ text: String) {
-    guard DataRequest.logLevel != .none else { return }
-
-    if DataRequest.logLevel != .error {
+    guard DataRequest.gr.logLevel != .none else { return }
+    
+    if DataRequest.gr.logLevel != .error {
         print(text)
     }
 }
 
 public func logVerbose(_ text: String) {
-    guard DataRequest.logLevel != .none else { return }
-
-    if DataRequest.logLevel == .verbose {
+    guard DataRequest.gr.logLevel != .none else { return }
+    
+    if DataRequest.gr.logLevel == .verbose {
         print(text)
     }
 }
 
-extension DataRequest {
-
-    public static var logLevel = GoodSwiftLogLevel.verbose
-
+public extension GRActive where Base == DataRequest {
+    
+    static var logLevel = GoodSwiftLogLevel.verbose
+    
     /// Prints request and response information.
     ///
     /// - returns: Self.
     @discardableResult
     func log<T: GRDecodable>(type: T.Type) -> Self {
-        guard DataRequest.logLevel != .none else { return self }
-
-        response(completionHandler: { (response: AFDataResponse<Data?>) in
+        guard DataRequest.gr.logLevel != .none else { return self }
+        
+        base.response(completionHandler: { (response: AFDataResponse<Data?>) in
             print("")
             if let url = response.request?.url?.absoluteString.removingPercentEncoding, let method = response.request?.httpMethod {
                 if response.error == nil {
@@ -134,7 +138,7 @@ extension DataRequest {
                 switch response.statusCode {
                 case 200 ..< 300:
                     logInfo("✅ \(response.statusCode)")
-
+                    
                 default:
                     logInfo("❌ \(response.statusCode)")
                 }
@@ -157,19 +161,19 @@ extension DataRequest {
         })
         return self
     }
-
+    
 }
 
 // MARK: - Private
 
-extension DataResponse {
-
-    public func response<T>(withValue value: T) -> DataResponse<T, AFError> {
-        return DataResponse<T, AFError>(request: request, response: response, data: data, metrics: .none, serializationDuration: 30, result: AFResult<T>.success(value))
+public extension GRActive where Base == DataRequest {
+    
+    func response<T>(withValue value: T) -> DataResponse<T, AFError> {
+        return DataResponse<T, AFError>(request: base.request, response: base.response, data: base.data, metrics: .none, serializationDuration: 30, result: AFResult<T>.success(value))
     }
-
-    public func response<T>(withError error: AFError) -> DataResponse<T, AFError> {
-        return DataResponse<T, AFError>(request: request, response: response, data: data, metrics: .none, serializationDuration: 30, result: AFResult<T>.failure(error))
+    
+    func response<T>(withError error: AFError) -> DataResponse<T, AFError> {
+        return DataResponse<T, AFError>(request: base.request, response: base.response, data: base.data, metrics: .none, serializationDuration: 30, result: AFResult<T>.failure(error))
     }
-
+    
 }

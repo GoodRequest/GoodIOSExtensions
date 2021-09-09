@@ -72,11 +72,11 @@ let package = Package(
             path: "./Sources/GoodCache"),
         .target(
             name: "Sample",
-            dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodCache", "GoodExtensions", "GoodReactor"],
+            dependencies: ["GoodStructs", "GoodCombineExtensions", "GoodCache", "GoodExtensions", "GoodReactor", "GoodRequestManager"],
             path: "Sample"),
         .target(
             name: "GoodRequestManager",
-            dependencies: ["Alamofire", .target(name: "GoodStructs")],
+            dependencies: ["Alamofire", .target(name: "GoodStructs"), .target(name: "GRCompatible")],
             path: "./Sources/GoodRequestManager"
         ),
         .testTarget(

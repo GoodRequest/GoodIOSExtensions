@@ -5,6 +5,8 @@
 //  Created by Dominik Pethö on 12/15/20.
 //
 
+#if !os(macOS)
+
 import UIKit
 import GoodExtensions
 import GoodStructs
@@ -24,7 +26,6 @@ class ViewController: UIViewController {
         let pole: Collection<Int>? = [1]
         MKMultiPoint.init().gr.points
         
-        UIDevice().gr.device.
         "".gr.removeWhiteSpacesAndNewlines
         
         debugPrint(" dominik Pétho ")
@@ -34,3 +35,4 @@ class ViewController: UIViewController {
 
 }
 
+#endif
