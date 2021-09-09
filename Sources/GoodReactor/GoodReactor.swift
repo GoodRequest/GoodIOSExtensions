@@ -25,7 +25,6 @@ open class GoodCoordinator<Step>: NSObject {
 
     public func firstCoordinatorOfType<T>(type: T.Type) -> T? {
         guard let parentCoordinator = parentCoordinator else {
-            print("Reached last element without finding requested type")
             return nil
         }
         if let parentCoordinator = parentCoordinator as? T {
@@ -37,7 +36,6 @@ open class GoodCoordinator<Step>: NSObject {
 
     public func lastCoordinatorOfType<T>(type: T.Type, lastMatch: T?) -> T? {
         guard let parentCoordinator = parentCoordinator else {
-            print("Reached last element without finding requested type")
             return lastMatch
         }
         if let parentCoordinatorType = parentCoordinator as? T {
@@ -46,7 +44,6 @@ open class GoodCoordinator<Step>: NSObject {
             return parentCoordinator.lastCoordinatorOfType(type: T.self, lastMatch: lastMatch)
         }
     }
-
 
 }
 
