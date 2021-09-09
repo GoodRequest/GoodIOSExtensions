@@ -14,8 +14,37 @@ import CombineExt
 open class GoodCoordinator<Step>: NSObject {
     
     open var cancellables: Set<AnyCancellable> = Set()
+    open let parentCoordinator: Coordinator<AppStep>?
+    open var navigationController: UINavigationController?
     @Published open var step: Step?
-    
+
+    public init(parentCoordinator: Coordinator<AppStep>? = nil, navigationController: UINavigationController? = nil) {
+        self.navigationController = navigationController
+        self.parentCoordinator = parentCoordinator
+    }
+
+    public func firstCoordinatorOfType<T>(type: T.Type) -> T? {
+        guard let parentCoordinator = parentCoordinator else {
+            return nil
+        }
+        if let parentCoordinator = parentCoordinator as? T {
+            return parentCoordinator
+        } else {
+            return parentCoordinator.firstCoordinatorOfType(type: T.self)
+        }
+    }
+
+    public func lastCoordinatorOfType<T>(type: T.Type, lastMatch: T?) -> T? {
+        guard let parentCoordinator = parentCoordinator else {
+            return lastMatch
+        }
+        if let parentCoordinatorType = parentCoordinator as? T {
+            return parentCoordinator.lastCoordinatorOfType(type: T.self, lastMatch: parentCoordinatorType)
+        } else {
+            return parentCoordinator.lastCoordinatorOfType(type: T.self, lastMatch: lastMatch)
+        }
+    }
+
 }
 
 @available(iOS 13.0, *)
