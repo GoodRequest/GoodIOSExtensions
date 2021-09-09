@@ -102,4 +102,66 @@ public extension GRActive where Base: UIView {
 
 }
 
+// MARK: - Blur
+
+public extension GRActive where Base: UIView {
+
+    func blur(_ blurRadius: Double = 3.5) {
+        unblur()
+        guard let blurredImage = createBlurryImage(blurRadius) else {
+            return
+        }
+
+        let blurredImageView = UIImageView(image: blurredImage)
+        blurredImageView.translatesAutoresizingMaskIntoConstraints = false
+        blurredImageView.tag = -419
+        blurredImageView.contentMode = .center
+        blurredImageView.backgroundColor = .clear
+
+        base.addSubview(blurredImageView)
+        NSLayoutConstraint.activate([
+            blurredImageView.centerXAnchor.constraint(equalTo: base.centerXAnchor),
+            blurredImageView.centerYAnchor.constraint(equalTo: base.centerYAnchor)
+        ])
+    }
+
+    func unblur() {
+        base.subviews.forEach {
+            if $0.tag == -419 {
+                $0.removeFromSuperview()
+                base.layoutSubviews()
+            }
+        }
+    }
+
+    private func createBlurryImage(_ blurRadius: Double) -> UIImage? {
+        UIGraphicsBeginImageContext(base.bounds.size)
+        guard let currentContext = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        base.layer.render(in: currentContext)
+        guard let image = UIGraphicsGetImageFromCurrentImageContext(),
+            let blurFilter = CIFilter(name: "CIGaussianBlur") else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+        UIGraphicsEndImageContext()
+
+        blurFilter.setDefaults()
+
+        blurFilter.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+        blurFilter.setValue(blurRadius, forKey: kCIInputRadiusKey)
+
+        var convertedImage: UIImage?
+        let context = CIContext(options: nil)
+        if let blurOutputImage = blurFilter.outputImage,
+            let cgImage = context.createCGImage(blurOutputImage, from: blurOutputImage.extent) {
+            convertedImage = UIImage(cgImage: cgImage)
+        }
+
+        return convertedImage
+    }
+
+}
+
 #endif

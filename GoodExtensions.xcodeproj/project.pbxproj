@@ -25,6 +25,8 @@
 		B18F13422677479E00F7FF17 /* UIRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */; };
 		B18F13432677479E00F7FF17 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F13402677479E00F7FF17 /* UIScrollView.swift */; };
 		B1D953AD2673972700EE30CE /* GesturePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* GesturePublisher.swift */; };
+		BAF111E426D7B1AB00D16E9F /* UIBarButtonPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF111E326D7B1AB00D16E9F /* UIBarButtonPublisher.swift */; };
+		BAF111E626D7B1C200D16E9F /* UIBarButtonSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF111E526D7B1C200D16E9F /* UIBarButtonSubscriber.swift */; };
 		OBJ_113 /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* DemandBuffer.swift */; };
 		OBJ_114 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Sink.swift */; };
 		OBJ_115 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_69 /* Optional.swift */; };
@@ -230,6 +232,8 @@
 		B18F133E2677479D00F7FF17 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRefreshControl.swift; sourceTree = "<group>"; };
 		B18F13402677479E00F7FF17 /* UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
+		BAF111E326D7B1AB00D16E9F /* UIBarButtonPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonPublisher.swift; sourceTree = "<group>"; };
+		BAF111E526D7B1C200D16E9F /* UIBarButtonSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonSubscriber.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"GoodExtensions::GRCompatible::Product" /* GRCompatible.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GRCompatible.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"GoodExtensions::GoodCache::Product" /* GoodCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoodCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -417,6 +421,8 @@
 				OBJ_19 /* Publishers.swift */,
 				OBJ_20 /* UIControlPublisher.swift */,
 				OBJ_21 /* UIControlSubscriber.swift */,
+				BAF111E326D7B1AB00D16E9F /* UIBarButtonPublisher.swift */,
+				BAF111E526D7B1C200D16E9F /* UIBarButtonSubscriber.swift */,
 			);
 			name = GoodCombineExtensions;
 			path = Sources/GoodCombineExtensions;
@@ -939,8 +945,10 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_172 /* GestureSubscriber.swift in Sources */,
+				BAF111E626D7B1C200D16E9F /* UIBarButtonSubscriber.swift in Sources */,
 				OBJ_173 /* Nwise.swift in Sources */,
 				B1D953AD2673972700EE30CE /* GesturePublisher.swift in Sources */,
+				BAF111E426D7B1AB00D16E9F /* UIBarButtonPublisher.swift in Sources */,
 				OBJ_174 /* Publishers.swift in Sources */,
 				OBJ_175 /* UIControlPublisher.swift in Sources */,
 				OBJ_176 /* UIControlSubscriber.swift in Sources */,

@@ -176,6 +176,10 @@ public extension GRActive where Base: UICollectionView {
 
     /// Register reusable cell with specified class type.
     func registerCell<T: UICollectionViewCell>(fromClass type: T.Type) {
+        guard Bundle.main.path(forResource: String(describing: type), ofType: "nib") != nil else {
+            base.register(T.self, forCellWithReuseIdentifier: String(describing: type))
+            return
+        }
         base.register(UINib(nibName: String(describing: type), bundle: nil), forCellWithReuseIdentifier: String(describing: type))
     }
 
@@ -222,6 +226,10 @@ public extension GRActive where Base: UITableView {
 
     /// Register reusable cell with specified class type.
     func registerCell<T: UITableViewCell>(fromClass type: T.Type) {
+        guard Bundle.main.path(forResource: String(describing: type), ofType: "nib") != nil else {
+            base.register(T.self, forCellReuseIdentifier: String(describing: type))
+            return
+        }
         base.register(UINib(nibName: String(describing: type), bundle: nil), forCellReuseIdentifier: String(describing: type))
     }
 
