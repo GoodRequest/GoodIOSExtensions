@@ -89,13 +89,13 @@ public enum GoodSwiftLogLevel {
 }
 
 /// Functions for printing in each log level.
-public func logError(_ text: String) {
+func logError(_ text: String) {
     guard DataRequest.gr.logLevel != .none else { return }
     
     print(text)
 }
 
-public func logInfo(_ text: String) {
+func logInfo(_ text: String) {
     guard DataRequest.gr.logLevel != .none else { return }
     
     if DataRequest.gr.logLevel != .error {
@@ -103,7 +103,7 @@ public func logInfo(_ text: String) {
     }
 }
 
-public func logVerbose(_ text: String) {
+func logVerbose(_ text: String) {
     guard DataRequest.gr.logLevel != .none else { return }
     
     if DataRequest.gr.logLevel == .verbose {
