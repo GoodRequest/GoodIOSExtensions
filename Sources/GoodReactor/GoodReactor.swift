@@ -17,7 +17,7 @@ import UIKit
 open class GoodCoordinator<Step>: NSObject {
     
     open var cancellables: Set<AnyCancellable> = Set()
-    public let parentCoordinator: GoodCoordinator<Step>?
+    open var parentCoordinator: GoodCoordinator<Step>?
     open var navigationController: UINavigationController?
     @Published open var step: Step?
 
