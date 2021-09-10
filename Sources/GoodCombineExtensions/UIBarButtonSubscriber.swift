@@ -9,8 +9,10 @@
 import UIKit
 import Combine
 
+// swiftlint:disable line_length
 @available(iOS 13.0, *)
 final class UIBarButtonSubscription<SubscriberType: Subscriber, BarButtonItem: UIBarButtonItem>: Subscription where SubscriberType.Input == BarButtonItem {
+// swiftlint:enable line_length
 
     private var subscriber: SubscriberType?
     private weak var barButtonItem: BarButtonItem?

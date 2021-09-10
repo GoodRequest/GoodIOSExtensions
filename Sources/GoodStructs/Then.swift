@@ -13,8 +13,6 @@ import UIKit
 
 public protocol Then {}
 
-//swiftlint:disable numbers_smell
-
 public extension Then where Self: Any {
 
     /// Makes it available to set properties with closures just after initializing and copying the value types.
@@ -42,7 +40,7 @@ public extension Then where Self: Any {
 
 }
 
-extension Then where Self: AnyObject {
+public extension Then where Self: AnyObject {
 
     /// Makes it available to set properties with closures just after initializing.
     ///
@@ -51,7 +49,7 @@ extension Then where Self: AnyObject {
     ///       $0.textColor = UIColor.blackColor()
     ///       $0.text = "Hello, World!"
     ///     }
-    @discardableResult public func then(_ block: (Self) throws -> Void) rethrows -> Self {
+    @discardableResult func then(_ block: (Self) throws -> Void) rethrows -> Self {
         try block(self)
         return self
     }
@@ -64,8 +62,8 @@ extension CGRect: Then {}
 extension CGSize: Then {}
 extension CGVector: Then {}
 
-extension Then where Self: AnyObject {
-    @discardableResult public func then(_ block: (Self) -> Void) -> Self {
+public extension Then where Self: AnyObject {
+    @discardableResult func then(_ block: (Self) -> Void) -> Self {
         block(self)
         return self
     }

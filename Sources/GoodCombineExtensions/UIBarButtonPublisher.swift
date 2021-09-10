@@ -22,7 +22,7 @@ public struct UIBarButtonPublisher<BarButtonItem: UIBarButtonItem>: Publisher {
         self.barButtonItem = barButtonItem
     }
 
-    public func receive<S>(subscriber: S) where S : Subscriber,
+    public func receive<S>(subscriber: S) where S: Subscriber,
                                          S.Failure == UIBarButtonPublisher.Failure,
                                          S.Input == UIBarButtonPublisher.Output {
         let subscription = UIBarButtonSubscription(

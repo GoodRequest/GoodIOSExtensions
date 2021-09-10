@@ -101,9 +101,6 @@
 		OBJ_251 /* Either&Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Either&Result.swift */; };
 		OBJ_252 /* Nothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* Nothing.swift */; };
 		OBJ_253 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* Then.swift */; };
-		OBJ_260 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* AppDelegate.swift */; };
-		OBJ_261 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* SceneDelegate.swift */; };
-		OBJ_262 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* ViewController.swift */; };
 		OBJ_264 /* GoodReactor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GoodExtensions::GoodReactor::Product" /* GoodReactor.framework */; };
 		OBJ_265 /* GoodExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GoodExtensions::GoodExtensions::Product" /* GoodExtensions.framework */; };
 		OBJ_266 /* GoodCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GoodExtensions::GoodCache::Product" /* GoodCache.framework */; };
@@ -282,10 +279,6 @@
 		OBJ_50 /* Either&Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Either&Result.swift"; sourceTree = "<group>"; };
 		OBJ_51 /* Nothing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nothing.swift; sourceTree = "<group>"; };
 		OBJ_52 /* Then.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
-		OBJ_54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		OBJ_55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		OBJ_56 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		OBJ_57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_60 /* GoodExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodExtensionsTests.swift; sourceTree = "<group>"; };
 		OBJ_61 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
@@ -495,17 +488,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		OBJ_53 /* Sample */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_54 /* Info.plist */,
-				OBJ_55 /* AppDelegate.swift */,
-				OBJ_56 /* SceneDelegate.swift */,
-				OBJ_57 /* ViewController.swift */,
-			);
-			path = Sample;
-			sourceTree = SOURCE_ROOT;
-		};
 		OBJ_58 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -573,7 +555,6 @@
 				OBJ_22 /* GoodExtensions */,
 				OBJ_46 /* GoodReactor */,
 				OBJ_49 /* GoodStructs */,
-				OBJ_53 /* Sample */,
 			);
 			name = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -1027,9 +1008,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_260 /* AppDelegate.swift in Sources */,
-				OBJ_261 /* SceneDelegate.swift in Sources */,
-				OBJ_262 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

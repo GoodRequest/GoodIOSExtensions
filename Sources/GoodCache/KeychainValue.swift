@@ -15,7 +15,9 @@ import CombineExt
 public class KeychainValue<T: Codable> {
 
     private struct Wrapper: Codable {
+
         let value: T
+
     }
 
     private let subject: PassthroughSubject<T, Never> = PassthroughSubject()
@@ -31,15 +33,21 @@ public class KeychainValue<T: Codable> {
 
     public var wrappedValue: T {
         get {
-            guard let data = KeychainWrapper.standard.data(forKey: key, withAccessibility: accessibility) else { return defaultValue }
-            let value = (try? PropertyListDecoder().decode(Wrapper.self, from: data))?.value ?? defaultValue            
-            
+            guard let data = KeychainWrapper.standard.data(
+                    forKey: key,
+                    withAccessibility: accessibility
+            ) else {
+                return defaultValue
+            }
+
+            let value = (try? PropertyListDecoder().decode(Wrapper.self, from: data))?.value ?? defaultValue
+
             return value
         }
 
-        set(newValue) {            
+        set(newValue) {
             let wrapper = Wrapper(value: newValue)
-            
+
             guard let data = try? PropertyListEncoder().encode(wrapper) else {
                 KeychainWrapper.standard.removeObject(forKey: key)
                 return

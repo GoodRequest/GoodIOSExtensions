@@ -10,7 +10,7 @@ import Foundation
 import GRCompatible
 
 public extension GRActive where Base == URL {
-    
+
     var formatted: String? {
         guard let components = URLComponents(url: base, resolvingAgainstBaseURL: false),
               let scheme = components.scheme,
@@ -19,5 +19,5 @@ public extension GRActive where Base == URL {
         }
         return "\(scheme)://\(host)"
     }
-    
+
 }

@@ -12,7 +12,7 @@ import UIKit
 import GRCompatible
 
 public extension GRActive where Base: UIDatePicker {
-    
+
     var dateBinding: Date {
         get {
             return base.date
@@ -22,7 +22,7 @@ public extension GRActive where Base: UIDatePicker {
             base.sendActions(for: .valueChanged)
         }
     }
-    
+
 }
 
 #endif

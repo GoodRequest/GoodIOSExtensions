@@ -10,21 +10,23 @@
 import UIKit
 import Combine
 
+// swiftlint:disable line_length
 @available(iOS 13.0, *)
 final public class UIControlSubscription<SubscriberType: Subscriber, Control: UIControl>: Subscription where SubscriberType.Input == Control {
-    
+// swiftlint:enable line_length
+
     private var subscriber: SubscriberType?
     private weak var control: Control?
 
     init(subscriber: SubscriberType, control: Control?, event: UIControl.Event) {
         self.subscriber = subscriber
         self.control = control
-        
+
         control?.addTarget(self, action: #selector(eventHandler), for: event)
     }
 
     public func request(_ demand: Subscribers.Demand) {
-        
+
     }
 
     public func cancel() {

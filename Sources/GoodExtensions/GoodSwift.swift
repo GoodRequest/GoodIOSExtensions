@@ -33,7 +33,8 @@ public extension UIView {
     @IBInspectable var cornerRadius: CGFloat {
         get {
             return layer.cornerRadius
-        } set {
+        }
+        set {
             layer.cornerRadius = newValue
         }
     }
@@ -42,7 +43,8 @@ public extension UIView {
     @IBInspectable var borderColor: UIColor {
         get {
             return UIColor(cgColor: layer.borderColor ?? UIColor.black.cgColor)
-        } set {
+        }
+        set {
             layer.borderColor = newValue.cgColor
         }
     }
@@ -51,7 +53,8 @@ public extension UIView {
     @IBInspectable var borderWidth: CGFloat {
         get {
             return layer.borderWidth
-        } set {
+        }
+        set {
             layer.borderWidth = newValue
         }
     }
@@ -60,7 +63,8 @@ public extension UIView {
     @IBInspectable var masksToBounds: Bool {
         get {
             return layer.masksToBounds
-        } set {
+        }
+        set {
             layer.masksToBounds = newValue
         }
     }
@@ -69,7 +73,8 @@ public extension UIView {
     @IBInspectable var shadowOpacity: Float {
         get {
             return layer.shadowOpacity
-        } set {
+        }
+        set {
             layer.shadowOpacity = newValue
         }
     }
@@ -78,7 +83,8 @@ public extension UIView {
     @IBInspectable var shadowColor: UIColor {
         get {
             return UIColor(cgColor: layer.shadowColor ?? UIColor.black.cgColor)
-        } set {
+        }
+        set {
             layer.shadowColor = newValue.cgColor
         }
     }
@@ -87,7 +93,8 @@ public extension UIView {
     @IBInspectable var shadowRadius: CGFloat {
         get {
             return layer.shadowRadius
-        } set {
+        }
+        set {
             layer.shadowRadius = newValue
         }
     }
@@ -96,7 +103,8 @@ public extension UIView {
     @IBInspectable var shadowOffset: CGSize {
         get {
             return layer.shadowOffset
-        } set {
+        }
+        set {
             layer.shadowOffset = newValue
         }
     }
@@ -104,7 +112,7 @@ public extension UIView {
 }
 
 public extension GRActive where Base: UIView {
-    
+
     /// Animates shake with view
     func shakeView(duration: CFTimeInterval = 0.02, repeatCount: Float = 8.0, offset: CGFloat = 5.0) {
         let animation = CABasicAnimation(keyPath: "position")
@@ -180,19 +188,37 @@ public extension GRActive where Base: UICollectionView {
             base.register(T.self, forCellWithReuseIdentifier: String(describing: type))
             return
         }
-        base.register(UINib(nibName: String(describing: type), bundle: nil), forCellWithReuseIdentifier: String(describing: type))
+        base.register(
+            UINib(nibName: String(describing: type), bundle: nil),
+            forCellWithReuseIdentifier: String(describing: type)
+        )
     }
 
     /// Register reusable supplementary view with specified class type.
-    func register<T: UICollectionReusableView>(viewClass type: T.Type, forSupplementaryViewOfKind: String = UICollectionView.elementKindSectionHeader) {
-        base.register(UINib(nibName: String(describing: type), bundle: nil), forSupplementaryViewOfKind: forSupplementaryViewOfKind, withReuseIdentifier: String(describing: type))
+    func register<T: UICollectionReusableView>(
+        viewClass type: T.Type,
+        forSupplementaryViewOfKind: String = UICollectionView.elementKindSectionHeader
+    ) {
+        base.register(
+            UINib(nibName: String(describing: type), bundle: nil),
+            forSupplementaryViewOfKind: forSupplementaryViewOfKind,
+            withReuseIdentifier: String(describing: type)
+        )
     }
 
     // swiftlint:disable force_cast
 
     /// Dequeue reusable supplementary view with specified class type.
-    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(ofKind kind: String, fromClass type: T.Type, for indexPath: IndexPath) -> T {
-        return base.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: type), for: indexPath) as! T
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(
+        ofKind kind: String,
+        fromClass type: T.Type,
+        for indexPath: IndexPath
+    ) -> T {
+        return base.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: String(describing: type),
+            for: indexPath
+        ) as! T
     }
 
     /// Dequeue reusable cell with specified class type.
@@ -213,9 +239,13 @@ public extension GRActive where Base: UICollectionView {
 
         coordinator.animate(alongsideTransition: { _ in
             self.base.deselectItem(at: selectedIndexPath, animated: true)
-        }, completion: { [weak base] (context) in
+        }, completion: { [weak base] context in
             if context.isCancelled {
-                base?.selectItem(at: selectedIndexPath, animated: false, scrollPosition: UICollectionView.ScrollPosition(rawValue: 0))
+                base?.selectItem(
+                    at: selectedIndexPath,
+                    animated: false,
+                    scrollPosition: UICollectionView.ScrollPosition(rawValue: 0)
+                )
             }
         })
     }
@@ -230,12 +260,18 @@ public extension GRActive where Base: UITableView {
             base.register(T.self, forCellReuseIdentifier: String(describing: type))
             return
         }
-        base.register(UINib(nibName: String(describing: type), bundle: nil), forCellReuseIdentifier: String(describing: type))
+        base.register(
+            UINib(nibName: String(describing: type), bundle: nil),
+            forCellReuseIdentifier: String(describing: type)
+        )
     }
 
     /// Register reusable header footer view with specified class type.
     func registerHeaderFooterView<T: UITableViewHeaderFooterView>(fromClass type: T.Type) {
-        base.register(UINib(nibName: String(describing: type), bundle: nil), forHeaderFooterViewReuseIdentifier: String(describing: type))
+        base.register(
+            UINib(nibName: String(describing: type), bundle: nil),
+            forHeaderFooterViewReuseIdentifier: String(describing: type)
+        )
     }
 
     /// Dequeue reusable header footer view with specified class type.
@@ -259,7 +295,7 @@ public extension GRActive where Base: UITableView {
 
         coordinator.animate(alongsideTransition: { _ in
             self.base.deselectRow(at: selectedIndexPath, animated: true)
-        }, completion: { [weak base] (context) in
+        }, completion: { [weak base] context in
             if context.isCancelled {
                 base?.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
             }
@@ -281,7 +317,7 @@ public extension GRActive where Base: UIColor {
     ///
     /// - returns: The new `UIColor` instance.
     static func color(r: Int, g: Int, b: Int, a: CGFloat = 1.0) -> UIColor {
-        return UIColor(red: CGFloat(r)/255.0, green: CGFloat(g)/255.0, blue: CGFloat(b)/255.0, alpha: a)
+        return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: a)
     }
 
 }
@@ -289,9 +325,7 @@ public extension GRActive where Base: UIColor {
 public extension GRActive where Base: UITableView {
 
     func sizeHeaderToFit() {
-
         if let headerView = base.tableHeaderView {
-
             headerView.setNeedsLayout()
             headerView.layoutIfNeeded()
 
@@ -306,7 +340,6 @@ public extension GRActive where Base: UITableView {
             headerView.setNeedsLayout()
             headerView.layoutIfNeeded()
         }
-
     }
 
     func updateHeaderWidth() {
@@ -324,7 +357,6 @@ public extension GRActive where Base: UITableView {
 
     func sizeFooterToFit() {
         if let footerView = base.tableFooterView {
-
             footerView.setNeedsLayout()
             footerView.layoutIfNeeded()
 

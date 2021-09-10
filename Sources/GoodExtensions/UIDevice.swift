@@ -12,7 +12,7 @@ import UIKit
 import GRCompatible
 
 public extension GRActive where Base: UIDevice {
-    
+
     var device: GRDevice {
         GRDevice(
             deviceId: base.identifierForVendor?.uuidString ?? "",
@@ -21,16 +21,16 @@ public extension GRActive where Base: UIDevice {
             deviceType: base.model
         )
     }
-    
+
 }
 
 public struct GRDevice {
-    
+
     public let deviceId: String
     public let deviceSystem: String
     public let deviceName: String
     public let deviceType: String
-    
+
 }
 
 #endif

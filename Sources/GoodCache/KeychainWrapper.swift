@@ -193,7 +193,9 @@ open class KeychainWrapper {
     /// - parameter forKey: The key to lookup data for.
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The decoded object associated with the key if it exists. If no data exists, or the data found cannot be decoded, returns nil.
-    open func object(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> NSCoding? {
+    open func object(
+    	forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> NSCoding? {
         guard let keychainData = data(forKey: key, withAccessibility: accessibility) else {
             return nil
         }
@@ -247,19 +249,27 @@ open class KeychainWrapper {
     
     // MARK: Public Setters
     
-    @discardableResult open func set(_ value: Int, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: Int, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
     
-    @discardableResult open func set(_ value: Float, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: Float, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
     
-    @discardableResult open func set(_ value: Double, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: Double, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
     
-    @discardableResult open func set(_ value: Bool, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: Bool, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
 
@@ -269,7 +279,9 @@ open class KeychainWrapper {
     /// - parameter forKey: The key to save the String under.
     /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
     /// - returns: True if the save was successful, false otherwise.
-    @discardableResult open func set(_ value: String, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: String, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         if let data = value.data(using: .utf8) {
             return set(data, forKey: key, withAccessibility: accessibility)
         } else {
@@ -283,7 +295,9 @@ open class KeychainWrapper {
     /// - parameter forKey: The key to save the object under.
     /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
     /// - returns: True if the save was successful, false otherwise.
-    @discardableResult open func set(_ value: NSCoding, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: NSCoding, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         let data = try! NSKeyedArchiver.archivedData(withRootObject: value, requiringSecureCoding: false)
         
         return set(data, forKey: key, withAccessibility: accessibility)
@@ -295,7 +309,9 @@ open class KeychainWrapper {
     /// - parameter forKey: The key to save the object under.
     /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
     /// - returns: True if the save was successful, false otherwise.
-    @discardableResult open func set(_ value: Data, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func set(
+    	_ value: Data, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         var keychainQueryDictionary: [String:Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
         
         keychainQueryDictionary[SecValueData] = value
@@ -319,7 +335,9 @@ open class KeychainWrapper {
     }
 
     @available(*, deprecated, message: "remove is deprecated, use removeObject instead")
-    @discardableResult open func remove(key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func remove(
+    	key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         return removeObject(forKey: key, withAccessibility: accessibility)
     }
     
@@ -328,7 +346,9 @@ open class KeychainWrapper {
     /// - parameter forKey: The key value to remove data for.
     /// - parameter withAccessibility: Optional accessibility level to use when looking up the keychain item.
     /// - returns: True if successful, false otherwise.
-    @discardableResult open func removeObject(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    @discardableResult open func removeObject(
+    	forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         let keychainQueryDictionary: [String:Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
 
         // Delete
@@ -392,7 +412,9 @@ open class KeychainWrapper {
     }
     
     /// Update existing data associated with a specified key name. The existing data will be overwritten by the new data.
-    private func update(_ value: Data, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
+    private func update(
+    	_ value: Data, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> Bool {
         var keychainQueryDictionary: [String:Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
         let updateDictionary = [SecValueData:value]
         
@@ -416,7 +438,9 @@ open class KeychainWrapper {
     /// - parameter forKey: The key this query is for
     /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item. If none is provided, will default to .WhenUnlocked
     /// - returns: A dictionary with all the needed properties setup to access the keychain on iOS
-    private func setupKeychainQueryDictionary(forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> [String:Any] {
+    private func setupKeychainQueryDictionary(
+    	forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil
+    ) -> [String:Any] {
         // Setup default access as generic password (rather than a certificate, internet password, etc)
         var keychainQueryDictionary: [String:Any] = [SecClass:kSecClassGenericPassword]
         
