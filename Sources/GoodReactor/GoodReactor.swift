@@ -17,12 +17,10 @@ import UIKit
 open class GoodCoordinator<Step>: NSObject {
     
     open var cancellables: Set<AnyCancellable> = Set()
-    public let parentCoordinator: GoodCoordinator<Step>?
-    open var navigationController: UINavigationController?
+    open var parentCoordinator: GoodCoordinator<Step>?
     @Published open var step: Step?
 
-    public init(parentCoordinator: GoodCoordinator<Step>? = nil, navigationController: UINavigationController? = nil) {
-        self.navigationController = navigationController
+    public init(parentCoordinator: GoodCoordinator<Step>? = nil) {
         self.parentCoordinator = parentCoordinator
     }
 
