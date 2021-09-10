@@ -18,11 +18,9 @@ open class GoodCoordinator<Step>: NSObject {
     
     open var cancellables: Set<AnyCancellable> = Set()
     open var parentCoordinator: GoodCoordinator<Step>?
-    open var navigationController: UINavigationController?
     @Published open var step: Step?
 
-    public init(parentCoordinator: GoodCoordinator<Step>? = nil, navigationController: UINavigationController? = nil) {
-        self.navigationController = navigationController
+    public init(parentCoordinator: GoodCoordinator<Step>? = nil) {
         self.parentCoordinator = parentCoordinator
     }
 
