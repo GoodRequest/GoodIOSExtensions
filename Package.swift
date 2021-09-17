@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "GoodExtensions",
     platforms: [
-        .iOS(.v11),        
+        .iOS(.v11),
         .macOS(SupportedPlatform.MacOSVersion.v10_15)
     ],
     products: [
@@ -34,11 +34,11 @@ let package = Package(
         .library(
             name: "GoodRequestManager",
             targets: ["GoodRequestManager"]
-        ),
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-         .package(url: "https://github.com/CombineCommunity/CombineExt", from: "1.0.0"),
+        .package(url: "https://github.com/CombineCommunity/CombineExt", from: "1.0.0"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.2.0"))
     ],
     targets: [
@@ -69,7 +69,8 @@ let package = Package(
         .target(
             name: "GoodCache",
             dependencies: [.target(name: "GRCompatible"), "CombineExt"],
-            path: "./Sources/GoodCache"),
+            path: "./Sources/GoodCache"
+        ),
         .target(
             name: "GoodRequestManager",
             dependencies: ["Alamofire", .target(name: "GoodStructs"), .target(name: "GRCompatible")],

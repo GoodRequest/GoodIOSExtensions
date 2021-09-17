@@ -7,7 +7,7 @@ import Alamofire
 import UIKit
 
 final class GoodExtensionsTests: XCTestCase {
-    
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var view: UIView!
@@ -19,14 +19,14 @@ final class GoodExtensionsTests: XCTestCase {
 //        tableView.gr.rotate(.by180)
         print(scrollView.gr.isRefreshing)
         scrollView.refreshControl?.gr.endRefreshing()
-        
+
         DataRequest().gr.goodify()
-        
+
         XCTAssertEqual(" Dominik ".gr.removeWhiteSpacesAndNewlines, "Dominik")
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }
 

@@ -9,6 +9,7 @@
 import Foundation
 
 // MARK: Either represents a value of one of two possible types (a disjoint union).
+
 /// Instances of Either are either an instance of Left or Right.
 /// A common use of Either is as an alternative to Option for dealing with possible missing values,
 /// or option to return multiple types from functions.
@@ -16,6 +17,7 @@ import Foundation
 /// left - container for value of first type
 /// right - container for value of second type
 public enum Either<L, R> {
+
     case left(L)
     case right(R)
 
@@ -40,7 +42,9 @@ public enum Either<L, R> {
         }
     }
 
-    public func map<ReturnValue>(_ transform: (R) -> ReturnValue) -> Either<L, ReturnValue> where ReturnValue: Equatable {
+    public func map<ReturnValue>(
+        _ transform: (R) -> ReturnValue
+    ) -> Either<L, ReturnValue> where ReturnValue: Equatable {
         return flatMap { .right(transform($0)) }
     }
 
@@ -49,36 +53,39 @@ public enum Either<L, R> {
     }
 
     private func flatMap<RType>(_ transform: (R) -> Either<L, RType>)
-        -> Either<L, RType> {
-            return either(
-                ifLeft: Either<L, RType>.left,
-                ifRight: transform)
+    -> Either<L, RType> {
+        return either(
+            ifLeft: Either<L, RType>.left,
+            ifRight: transform
+        )
     }
 
     private func flatMap<RType>(_ transform: (R) -> Either<L, RType>)
-        -> Either<L, RType> where RType: Equatable {
-            return either(
-                ifLeft: Either<L, RType>.left,
-                ifRight: transform)
+    -> Either<L, RType> where RType: Equatable {
+        return either(
+            ifLeft: Either<L, RType>.left,
+            ifRight: transform
+        )
     }
 
     public func mapLeft<LType>(_ transform: (L) -> LType)
-        -> Either<LType, R> {
-            return flatMapLeft { .left(transform($0)) }
+    -> Either<LType, R> {
+        return flatMapLeft { .left(transform($0)) }
     }
 
     public func flatMapLeft<LType>(_ transform: (L) -> Either<LType, R>)
-        -> Either<LType, R> {
-            return either(
-                ifLeft: transform,
-                ifRight: Either<LType, R>.right)
+    -> Either<LType, R> {
+        return either(
+            ifLeft: transform,
+            ifRight: Either<LType, R>.right
+        )
     }
 
     public func mapToNothing() -> Either<L, Nothing> {
-
-            return either(
-                ifLeft: { return Either<L, Nothing>.left($0) },
-                ifRight: { _ in return Either<L, Nothing>.right(Nothing()) })
+        return either(
+            ifLeft: { return Either<L, Nothing>.left($0) },
+            ifRight: { _ in return Either<L, Nothing>.right(Nothing()) }
+        )
     }
 
     public func toResult() -> GRResult<R, L> {
@@ -118,6 +125,7 @@ public enum Either<L, R> {
  * Failure is used for catching errors from tasks. Used for preventing of TRY CATCH usage.
  */
 public enum GRResult<V, E> {
+
     case loading
     case success(V)
     case failure(E)
@@ -163,22 +171,31 @@ public enum GRResult<V, E> {
 
     public var isSuccess: Bool {
         switch self {
-        case .success: return true
-        default: return false
+        case .success:
+            return true
+
+        default:
+            return false
         }
     }
 
     public var isLoading: Bool {
         switch self {
-        case .loading: return true
-        default: return false
+        case .loading:
+            return true
+
+        default:
+            return false
         }
     }
 
     public var isFailure: Bool {
         switch self {
-        case .success: return true
-        default: return false
+        case .success:
+            return true
+
+        default:
+            return false
         }
     }
 
@@ -204,7 +221,9 @@ public enum GRResult<V, E> {
 }
 
 enum EitherResultError: Error {
+
     case unwrap
+
 }
 
 extension Either: Equatable where L: Equatable, R: Equatable {
@@ -261,7 +280,6 @@ public func ==<E, V>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
 }
 
 public func !=<V: Equatable, E: Equatable>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
-
     return !(left == right)
 }
 

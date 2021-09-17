@@ -14,7 +14,9 @@ import CombineExt
 public class UserDefaultValue<T: Codable> {
 
     struct Wrapper: Codable {
+
         let value: T
+
     }
 
     private let subject: PassthroughSubject<T, Never> = PassthroughSubject()
@@ -54,4 +56,3 @@ public class UserDefaultValue<T: Codable> {
     }()
 
 }
-

@@ -24,8 +24,8 @@ public struct UIControlPublisher<Control: UIControl>: Publisher {
         self.control = control
         self.event = event
     }
-    
-    public func receive<S>(subscriber: S) where S : Subscriber,
+
+    public func receive<S>(subscriber: S) where S: Subscriber,
                                          S.Failure == UIControlPublisher.Failure,
                                          S.Input == UIControlPublisher.Output {
         let subscription = UIControlSubscription(
@@ -39,11 +39,11 @@ public struct UIControlPublisher<Control: UIControl>: Publisher {
 
 @available(iOS 13.0, *)
 public extension GRActive where Base: UIControl {
-    
+
     func publisher(for event: UIControl.Event) -> UIControlPublisher<UIControl> {
         UIControlPublisher(control: base, event: event)
     }
-    
+
 }
 
 #endif

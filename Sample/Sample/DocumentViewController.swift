@@ -10,19 +10,19 @@ import UIKit
 import GoodExtensions
 
 class DocumentViewController: UIViewController {
-    
+
     @IBOutlet weak var documentNameLabel: UILabel!
-    
+
     var document: UIDocument?
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         UIView.animate(withDuration: 10) {
-            self.documentNameLabel.gr.rotate(.by180negative)
+            self.documentNameLabel.gr.rotate(.by180)
         }
         // Access the document
-        document?.open(completionHandler: { (success) in
+        document?.open(completionHandler: { success in
             if success {
                 // Display the content of the document, e.g.:
                 self.documentNameLabel.text = self.document?.fileURL.lastPathComponent
@@ -31,7 +31,7 @@ class DocumentViewController: UIViewController {
             }
         })
     }
-    
+
     @IBAction func dismissDocumentViewController() {
         dismiss(animated: true) {
             self.document?.close(completionHandler: nil)

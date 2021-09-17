@@ -10,12 +10,12 @@ import Alamofire
 import Combine
 
 public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where BaseURL.RawValue == String {
-    
+
     private let session: Session
-    
+
     let baseURL: BaseURL
     let configuration: URLSessionConfiguration
-    
+
     public init(
         configuration: URLSessionConfiguration,
         baseURL: BaseURL,
@@ -24,55 +24,67 @@ public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Ba
     ) {
         self.baseURL = baseURL
         self.configuration = configuration
-        
+
         session = .init(
             configuration: configuration,
             interceptor: interceptor,
             serverTrustManager: serverTrustManager
         )
     }
-    
+
     public func request(endpoint: T, base: BaseURL? = nil) -> DataRequest {
         var path: URL? = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
         var bodyData: [String: Any]?
-        
+
         switch endpoint.queryParameters {
         case .left(let params)?:
             let endpointURL = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
-            let urlComponent = NSURLComponents(url: endpointURL ?? URL(fileURLWithPath: ""), resolvingAgainstBaseURL: false)
-            
+            let urlComponent = NSURLComponents(
+                url: endpointURL ?? URL(fileURLWithPath: ""),
+                resolvingAgainstBaseURL: false
+            )
+
             urlComponent?.queryItems = params.map {
                 URLQueryItem(name: $0.0, value: String(describing: $0.1))
             }
             path = urlComponent?.url
-            
+
         case .right(let encodable)?:
             let endpointURL = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
-            let urlComponent = NSURLComponents(url: endpointURL ?? URL(fileURLWithPath: ""), resolvingAgainstBaseURL: false)
-            
+            let urlComponent = NSURLComponents(
+                url: endpointURL ?? URL(fileURLWithPath: ""),
+                resolvingAgainstBaseURL: false
+            )
+
             urlComponent?.queryItems = encodable.jsonDictionary?.map {
                 let (key, value) = $0
                 return URLQueryItem(name: String(describing: key), value: String(describing: value))
             }
-            
+
             path = urlComponent?.url
-        default: break
+
+        default:
+            break
         }
-        
+
         switch endpoint.parameters {
         case .left(let params)?:
             bodyData = params
-            
+
         case .right(let encodable)?:
             bodyData = encodable.jsonDictionary
-        default: break
+
+        default:
+            break
         }
-        
-        return session.request(path ?? URL(fileURLWithPath: ""),
-                               method: endpoint.method,
-                               parameters: bodyData,
-                               encoding: endpoint.encoding,
-                               headers: endpoint.headers)
+
+        return session.request(
+            path ?? URL(fileURLWithPath: ""),
+            method: endpoint.method,
+            parameters: bodyData,
+            encoding: endpoint.encoding,
+            headers: endpoint.headers
+        )
     }
 
 }

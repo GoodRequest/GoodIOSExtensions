@@ -28,7 +28,7 @@ public extension NameDescribable {
 }
 
 public extension GRActive where Base: NSObject {
-    
+
     var typeName: String {
         return String(describing: type(of: base))
     }
@@ -36,13 +36,13 @@ public extension GRActive where Base: NSObject {
     static var typeName: String {
         return String(describing: Base.self)
     }
-    
+
 }
 
 extension Array: GRCompatible {}
 
 public extension GRActive where Base: Collection {
-    
+
     var typeName: String {
         return String(describing: type(of: base))
     }
@@ -50,6 +50,5 @@ public extension GRActive where Base: Collection {
     static var typeName: String {
         return String(describing: Base.self)
     }
-    
-}
 
+}

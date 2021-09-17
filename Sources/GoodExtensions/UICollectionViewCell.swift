@@ -12,18 +12,17 @@ import UIKit
 import GRCompatible
 
 public extension GRActive where Base: UICollectionViewCell {
-    
+
     func animate(selected: Bool) {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.2,
             delay: .zero,
-            options: .beginFromCurrentState,
-            animations: { [weak base] in
-                base?.contentView.transform = selected ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
-            },
-            completion: nil)
+            options: .beginFromCurrentState
+        ) { [weak base] in
+            base?.contentView.transform = selected ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+        }
     }
-    
+
 }
 
 #endif
