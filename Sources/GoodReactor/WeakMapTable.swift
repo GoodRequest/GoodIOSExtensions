@@ -9,9 +9,10 @@
 import Foundation
 
 // MARK: - WeakMapTable
-
 /// https://github.com/ReactorKit/WeakMapTable
+
 final public class WeakMapTable<Key, Value> where Key: AnyObject {
+
     private var dictionary: [Weak<Key>: Value] = [:]
     private let lock = NSRecursiveLock()
 
