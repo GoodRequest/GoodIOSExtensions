@@ -8,7 +8,6 @@
 
 #if !os(macOS)
 
-import UIKit
 import GRCompatible
 
 extension CGAffineTransform: GRCompatible {}

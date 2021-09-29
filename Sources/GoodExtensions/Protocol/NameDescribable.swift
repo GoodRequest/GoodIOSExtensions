@@ -10,6 +10,7 @@ import GRCompatible
 
 public protocol NameDescribable {
 
+    
     var typeName: String { get }
     static var typeName: String { get }
 
@@ -38,8 +39,6 @@ public extension GRActive where Base: NSObject {
     }
 
 }
-
-extension Array: GRCompatible {}
 
 public extension GRActive where Base: Collection {
 

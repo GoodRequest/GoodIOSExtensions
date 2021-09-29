@@ -31,6 +31,20 @@ public extension GRActive where Base: UIColor {
         )
     }
 
+    /// Creates an instance with specified RGBA values.
+    ///
+    /// - returns: The new `UIColor` instance.
+    static func color(rgb: Int, a: CGFloat = 1.0) -> UIColor {
+        return UIColor.gr.color(r: rgb, g: rgb, b: rgb, a: a)
+    }
+
+    /// Creates an instance with specified RGBA values.
+    ///
+    /// - returns: The new `UIColor` instance.
+    static func color(r: Int, g: Int, b: Int, a: CGFloat = 1.0) -> UIColor {
+        return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: a)
+    }
+
 }
 
 #endif

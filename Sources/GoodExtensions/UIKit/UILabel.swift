@@ -13,6 +13,10 @@ import GRCompatible
 
 public extension GRActive where Base: UILabel {
 
+
+    /**
+     Checks if intrisic width is wider than bounds
+     */
     var isTruncated: Bool {
         return base.intrinsicContentSize.width > base.bounds.width
     }

@@ -11,6 +11,8 @@
 import UIKit
 import GRCompatible
 
+// MARK: - Initialization from XIB
+
 public extension GRActive where Base: UIView {
 
     static func loadFromNib() -> Self {
@@ -49,7 +51,163 @@ public extension GRActive where Base: UIView {
 
 }
 
-// MARK: - Animation
+// MARK: - Mask rendering
+
+public extension GRActive where Base: UIView {
+
+    var circleMaskImage: UIView {
+        base.clipsToBounds = true
+        base.layer.cornerRadius = base.frame.width / 2.0
+        return base
+    }
+
+}
+
+// MARK: - UIView InspectableAttributes
+
+public extension UIView {
+
+    /// View corner radius. Don't forget to set clipsToBounds = true
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+        }
+    }
+
+    /// View border color
+    @IBInspectable var borderColor: UIColor {
+        get {
+            return UIColor(cgColor: layer.borderColor ?? UIColor.black.cgColor)
+        }
+        set {
+            layer.borderColor = newValue.cgColor
+        }
+    }
+
+    /// View border width
+    @IBInspectable var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+
+    /// View's layer masks to bounds
+    @IBInspectable var masksToBounds: Bool {
+        get {
+            return layer.masksToBounds
+        }
+        set {
+            layer.masksToBounds = newValue
+        }
+    }
+
+    /// View shadow opacity
+    @IBInspectable var shadowOpacity: Float {
+        get {
+            return layer.shadowOpacity
+        }
+        set {
+            layer.shadowOpacity = newValue
+        }
+    }
+
+    /// View shadow color
+    @IBInspectable var shadowColor: UIColor {
+        get {
+            return UIColor(cgColor: layer.shadowColor ?? UIColor.black.cgColor)
+        }
+        set {
+            layer.shadowColor = newValue.cgColor
+        }
+    }
+
+    /// View shadow radius
+    @IBInspectable var shadowRadius: CGFloat {
+        get {
+            return layer.shadowRadius
+        }
+        set {
+            layer.shadowRadius = newValue
+        }
+    }
+
+    /// View shadow offset
+    @IBInspectable var shadowOffset: CGSize {
+        get {
+            return layer.shadowOffset
+        }
+        set {
+            layer.shadowOffset = newValue
+        }
+    }
+
+}
+
+// MARK: - UIView Animations
+
+public extension GRActive where Base: UIView {
+
+    /// Animates shake with view
+    func shakeView(duration: CFTimeInterval = 0.02, repeatCount: Float = 8.0, offset: CGFloat = 5.0) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = duration
+        animation.repeatCount = repeatCount
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: base.center.x - offset, y: base.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: base.center.x + offset, y: base.center.y))
+        base.layer.add(animation, forKey: "position")
+    }
+
+    enum Rotate {
+
+        case by0
+        case by90
+        case by180
+        case by270
+        case custom(Double)
+
+        var rotationValue: Double {
+            switch self {
+            case .by0:
+                return 0.0
+
+            case .by90:
+                return .pi / 2
+
+            case .by180:
+                return .pi
+
+            case .by270:
+                return .pi + .pi / 2
+
+            case .custom(let value):
+                return value
+            }
+        }
+
+    }
+
+    /// Rotates the view by specified angle.
+    func rotate(_ rotateBy: Rotate) {
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0.0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 0.5,
+            options: .beginFromCurrentState,
+            animations: { [weak base] in
+                base?.transform = CGAffineTransform(rotationAngle: CGFloat(rotateBy.rotationValue))
+            }
+        )
+    }
+
+}
 
 public extension GRActive where Base: UIView {
 
@@ -93,18 +251,6 @@ public extension GRActive where Base: UIView {
         animator.startAnimation(afterDelay: afterDelay)
 
         return animator
-    }
-
-}
-
-// MARK: - Props
-
-public extension GRActive where Base: UIView {
-
-    var circleMaskImage: UIView {
-        base.clipsToBounds = true
-        base.layer.cornerRadius = base.frame.width / 2.0
-        return base
     }
 
 }
