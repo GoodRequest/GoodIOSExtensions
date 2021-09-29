@@ -24,7 +24,7 @@
 		5DDE51E3270437780082233D /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE51E2270437780082233D /* UICollectionView.swift */; };
 		5DDE51E52704382F0082233D /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE51E42704382F0082233D /* UITableView.swift */; };
 		5DDE51E8270438AD0082233D /* UIStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE51E7270438AD0082233D /* UIStoryboard.swift */; };
-		B18F13412677479E00F7FF17 /* Date+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F133E2677479D00F7FF17 /* Date+Extentions.swift */; };
+		B18F13412677479E00F7FF17 /* DateExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F133E2677479D00F7FF17 /* DateExtentions.swift */; };
 		B18F13422677479E00F7FF17 /* UIRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */; };
 		B18F13432677479E00F7FF17 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18F13402677479E00F7FF17 /* UIScrollView.swift */; };
 		B1D953AD2673972700EE30CE /* GesturePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* GesturePublisher.swift */; };
@@ -230,7 +230,7 @@
 		5DDE51E2270437780082233D /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		5DDE51E42704382F0082233D /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		5DDE51E7270438AD0082233D /* UIStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboard.swift; sourceTree = "<group>"; };
-		B18F133E2677479D00F7FF17 /* Date+Extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extentions.swift"; sourceTree = "<group>"; };
+		B18F133E2677479D00F7FF17 /* DateExtentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtentions.swift; sourceTree = "<group>"; };
 		B18F133F2677479E00F7FF17 /* UIRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRefreshControl.swift; sourceTree = "<group>"; };
 		B18F13402677479E00F7FF17 /* UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		BAF111E326D7B1AB00D16E9F /* UIBarButtonPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonPublisher.swift; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 		5DDE51E9270439920082233D /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				B18F133E2677479D00F7FF17 /* Date+Extentions.swift */,
+				B18F133E2677479D00F7FF17 /* DateExtentions.swift */,
 				OBJ_23 /* Array.swift */,
 				OBJ_25 /* Data.swift */,
 				OBJ_44 /* URL.swift */,
@@ -967,7 +967,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				B18F13412677479E00F7FF17 /* Date+Extentions.swift in Sources */,
+				B18F13412677479E00F7FF17 /* DateExtentions.swift in Sources */,
 				OBJ_187 /* Array.swift in Sources */,
 				OBJ_188 /* CGAffineTransform.swift in Sources */,
 				OBJ_189 /* Data.swift in Sources */,
