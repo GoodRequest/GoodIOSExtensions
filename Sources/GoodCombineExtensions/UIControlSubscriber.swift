@@ -6,7 +6,6 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
-#if !os(macOS)
 import UIKit
 import Combine
 
@@ -38,4 +37,3 @@ final public class UIControlSubscription<SubscriberType: Subscriber, Control: UI
         _ = subscriber?.receive(control)
     }
 }
-#endif

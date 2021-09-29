@@ -5,7 +5,6 @@
 //  Created by GoodRequest on 26/08/2021.
 //
 
-#if !os(macOS)
 import UIKit
 import Combine
 import GRCompatible
@@ -41,4 +40,3 @@ public extension GRActive where Base: UIBarButtonItem {
     }
 
 }
-#endif

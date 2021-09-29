@@ -5,7 +5,6 @@
 //  Created by Dominik Pethö on 4/30/19.
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
-#if !os(macOS)
 
 import UIKit
 import MapKit
@@ -57,4 +56,3 @@ public extension GRActive where Base: UIApplication {
 
 }
 
-#endif

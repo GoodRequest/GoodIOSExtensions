@@ -6,7 +6,6 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
-#if !os(macOS)
 
 import Foundation
 import UIKit
@@ -69,4 +68,3 @@ public extension Then where Self: AnyObject {
     }
 }
 
-#endif

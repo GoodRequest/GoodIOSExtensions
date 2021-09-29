@@ -70,6 +70,8 @@ public extension GRActive where Base: Collection {
 
 }
 
+extension Array: GRCompatible {}
+
 public extension Array {
 
     subscript(safe index: Int) -> Element? {

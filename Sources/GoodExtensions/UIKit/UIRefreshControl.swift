@@ -5,7 +5,6 @@
 //  Created by Andrej Jasso on 08/06/2021.
 //
 
-#if !os(macOS)
 
 import UIKit
 import GRCompatible
@@ -20,4 +19,3 @@ public extension GRActive where Base == UIRefreshControl {
 
 }
 
-#endif

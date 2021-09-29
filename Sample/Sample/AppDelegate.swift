@@ -4,7 +4,6 @@
 //
 //  Created by Dominik Pethö on 6/15/21.
 //
-#if !os(macOS)
 
 import UIKit
 
@@ -36,5 +35,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
-
-#endif

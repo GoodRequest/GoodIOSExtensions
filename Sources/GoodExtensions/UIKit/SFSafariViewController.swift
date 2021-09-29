@@ -6,7 +6,6 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
-#if !os(macOS)
 
 import UIKit
 import SafariServices
@@ -22,4 +21,3 @@ public extension GRActive where Base: SFSafariViewController {
 
 }
 
-#endif

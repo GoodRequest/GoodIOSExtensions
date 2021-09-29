@@ -6,9 +6,9 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
-#if !os(macOS)
 
 import GRCompatible
+import UIKit
 
 extension CGAffineTransform: GRCompatible {}
 
@@ -26,4 +26,3 @@ public extension GRActive where Base == CGAffineTransform {
 
 }
 
-#endif

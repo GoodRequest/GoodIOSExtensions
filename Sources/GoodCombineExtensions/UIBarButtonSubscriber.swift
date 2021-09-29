@@ -5,7 +5,6 @@
 //  Created by GoodRequest on 26/08/2021.
 //
 
-#if !os(macOS)
 import UIKit
 import Combine
 
@@ -42,4 +41,3 @@ final class UIBarButtonSubscription<SubscriberType: Subscriber, BarButtonItem: U
         _ = subscriber?.receive(barButtonItem)
     }
 }
-#endif

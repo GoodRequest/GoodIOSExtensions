@@ -5,7 +5,6 @@
 //  Created by Dominik Pethö on 4/30/19.
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
-#if !os(macOS)
 import UIKit
 import Combine
 
@@ -41,4 +40,3 @@ public class GestureSubscriber<S: Subscriber>: Subscription where S.Input == Ges
         _ = subscriber?.receive(gestureType)
     }
 }
-#endif

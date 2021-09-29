@@ -5,7 +5,6 @@
 //  Created by Andrej Jasso on 29/09/2021.
 //
 
-#if !os(macOS)
 
 import GRCompatible
 import UIKit
@@ -115,4 +114,3 @@ public extension GRActive where Base: UITableView {
 
 }
 
-#endif
