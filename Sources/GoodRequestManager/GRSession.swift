@@ -9,16 +9,16 @@ import Foundation
 import Alamofire
 import Combine
 
-public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where BaseURL.RawValue == String {
+public class GRSession<T: GREndpointManager> {
 
     private let session: Session
 
-    let baseURL: BaseURL
+    let baseURL: String
     let configuration: URLSessionConfiguration
 
     public init(
         configuration: URLSessionConfiguration,
-        baseURL: BaseURL,
+        baseURL: String,
         interceptor: RequestInterceptor? = nil,
         serverTrustManager: ServerTrustManager? = nil
     ) {
@@ -32,13 +32,27 @@ public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Ba
         )
     }
 
-    public func request(endpoint: T, base: BaseURL? = nil) -> DataRequest {
-        var path: URL? = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
+    public convenience init<BaseURL: RawRepresentable>(
+        configuration: URLSessionConfiguration,
+        baseURL: BaseURL,
+        interceptor: RequestInterceptor? = nil,
+        serverTrustManager: ServerTrustManager? = nil
+    ) where BaseURL.RawValue == String {
+        self.init(
+            configuration: configuration,
+            baseURL: baseURL.rawValue,
+            interceptor: interceptor,
+            serverTrustManager: serverTrustManager
+        )
+    }
+
+    public func request(endpoint: T, base: String? = nil) -> DataRequest {
+        var path: URL? = try? endpoint.asURL(baseURL: base ?? baseURL)
         var bodyData: [String: Any]?
 
         switch endpoint.queryParameters {
         case .left(let params)?:
-            let endpointURL = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
+            let endpointURL = try? endpoint.asURL(baseURL: base ?? baseURL)
             let urlComponent = NSURLComponents(
                 url: endpointURL ?? URL(fileURLWithPath: ""),
                 resolvingAgainstBaseURL: false
@@ -50,7 +64,7 @@ public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Ba
             path = urlComponent?.url
 
         case .right(let encodable)?:
-            let endpointURL = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
+            let endpointURL = try? endpoint.asURL(baseURL: base ?? baseURL)
             let urlComponent = NSURLComponents(
                 url: endpointURL ?? URL(fileURLWithPath: ""),
                 resolvingAgainstBaseURL: false
