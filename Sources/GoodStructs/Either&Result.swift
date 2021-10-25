@@ -120,7 +120,7 @@ public enum Either<L, R> {
 
 }
 
-/* Result represents state of task. Loading is mostly used at beginning of task.
+/** Result represents state of task. Loading is mostly used at beginning of task.
  * Success type represents result value when task is finished succesfully.
  * Failure is used for catching errors from tasks. Used for preventing of TRY CATCH usage.
  */
@@ -242,10 +242,9 @@ extension Either: Equatable where L: Equatable, R: Equatable {
 
 }
 
-/*
- *  Functions for comapring Result container
+/**
+ *  Functions for comparing Result container
  */
-
 extension GRResult: Equatable where E: Equatable, V: Equatable {
 
     public static func ==<E: Equatable, V: Equatable>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {

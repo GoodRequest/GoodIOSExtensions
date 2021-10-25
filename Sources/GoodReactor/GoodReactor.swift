@@ -6,8 +6,6 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
-#if !os(macOS)
-
 import Foundation
 import Combine
 import CombineExt
@@ -24,6 +22,10 @@ open class GoodCoordinator<Step>: NSObject {
         self.parentCoordinator = parentCoordinator
     }
 
+    /**
+     Search for the first  matching coordinator in hierarchy
+        *   Need to setup parent coordinator to establish the coordiantor hierarchy
+    */
     public func firstCoordinatorOfType<T>(type: T.Type) -> T? {
         guard let parentCoordinator = parentCoordinator else {
             return nil
@@ -35,6 +37,10 @@ open class GoodCoordinator<Step>: NSObject {
         }
     }
 
+    /**
+     Search for the last  matching coordinator in hierarchy
+        *   Need to setup parent coordinator to establish the coordiantor hierarchy
+    */
     public func lastCoordinatorOfType<T>(type: T.Type, lastMatch: T?) -> T? {
         guard let parentCoordinator = parentCoordinator else {
             return lastMatch
@@ -224,5 +230,3 @@ extension GoodReactor where Action == Mutation {
         return Just(action).eraseToAnyPublisher()
     }
 }
-
-#endif

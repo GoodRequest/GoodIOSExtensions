@@ -6,17 +6,17 @@
         "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
         "state": {
           "branch": null,
-          "revision": "f96b619bcb2383b43d898402283924b80e2c4bae",
-          "version": "5.4.3"
+          "revision": "d120af1e8638c7da36c8481fd61a66c0c08dc4fc",
+          "version": "5.4.4"
         }
       },
       {
         "package": "CombineExt",
-        "repositoryURL": "https://github.com/CombineCommunity/CombineExt",
+        "repositoryURL": "https://github.com/CombineCommunity/CombineExt.git",
         "state": {
           "branch": null,
-          "revision": "6664678135c6aec049c887a51c9da2545f184882",
-          "version": "1.2.0"
+          "revision": "0880829102152185190064fd17847a7c681d2127",
+          "version": "1.5.1"
         }
       }
     ]

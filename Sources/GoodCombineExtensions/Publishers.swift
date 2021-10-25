@@ -15,6 +15,9 @@ public extension Publisher where Self: GRCompatible {}
 @available(iOS 13.0, *)
 public extension GRActive where Base: Publisher {
 
+    /**
+     Combines two publishers to create a 2 member tupple type publisher result type
+    */
     func combineWith<Output2: AnyObject>(_ value: Output2) -> AnyPublisher<(Base.Output, Output2), Base.Failure> {
         base.compactMap { [weak value] currentValue in
             guard let value = value else { return nil }
@@ -22,6 +25,9 @@ public extension GRActive where Base: Publisher {
         }.eraseToAnyPublisher()
     }
 
+    /**
+     Combines two publishers to create a 3 member tupple type publisher result type
+    */
     func combineWith<Output2: AnyObject, Output3: AnyObject>(
         _ value: Output2,
         _ value2: Output3
@@ -32,25 +38,14 @@ public extension GRActive where Base: Publisher {
         }.eraseToAnyPublisher()
     }
 
-    func with<Output: AnyObject>(_ value: Output) -> AnyPublisher<Output, Base.Failure> {
-        base.compactMap { [weak value] _ in value }.eraseToAnyPublisher()
-    }
-
-    func with<Output: AnyObject, Output2: AnyObject>(
-        _ value: Output,
-        _ value2: Output2
-    ) -> AnyPublisher<(Output, Output2), Base.Failure> {
-        base.compactMap { [weak value, weak value2] _ in
-            guard let value = value, let value2 = value2 else { return nil }
-            return (value, value2)
-        }.eraseToAnyPublisher()
-    }
-
 }
 
 @available(iOS 13.0, *)
 public extension Publisher where Failure == Never {
 
+    /**
+    Sink substitution. Where you also assign value to keypath on root object specified
+    */
     func assign<Root: AnyObject>(to keyPath: ReferenceWritableKeyPath<Root, Output>, on root: Root) -> AnyCancellable {
        sink { [weak root] in
             root?[keyPath: keyPath] = $0
