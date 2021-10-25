@@ -1,5 +1,5 @@
-# GRProvider
-[![iOS Version](https://img.shields.io/badge/iOS_Version->=_13.0-brightgreen?logo=apple&logoColor=green)]() [![Swift Version](https://img.shields.io/badge/Swift_Version-5.2-green?logo=swift)](https://docs.swift.org/swift-book/)
+# GoodExtensions
+[![iOS Version](https://img.shields.io/badge/iOS_Version->=_12.0-brightgreen?logo=apple&logoColor=green)]() [![Swift Version](https://img.shields.io/badge/Swift_Version-5.5-green?logo=swift)](https://docs.swift.org/swift-book/)
 [![Supported devices](https://img.shields.io/badge/Supported_Devices-iPhone/iPad-green)]()
 [![Contains Test](https://img.shields.io/badge/Tests-YES-blue)]()
 [![Dependency Manager](https://img.shields.io/badge/Dependency_Manager-SPM-red)](#swiftpackagemanager)
@@ -72,9 +72,9 @@ cartButton.gr.tapPublisher
 
 ## GoodCache
 
-A propery wrapper to make caching into keychain and userdefaults extremelly easy.
+A property wrapper to make caching into keychain and UserDefaults extremely easy.
 
-```
+```swift
 @UserDefaultValue("appState", defaultValue: .inactive)
 var appState: AppState
 
@@ -85,12 +85,60 @@ var accessToken: String
 ## GoodExtensions
 All the other extensions:
 
-### Array 
-Returns array of elements where between each element will be inserted element, provided in parameter with the **separated**
+### Array
 
-Returns true if array contains item with specified index, otherwise returns false with the **contains** function
+#### separated
+Returns array of elements where between each element will be inserted element, provided in the parameter.
 
-Returns if Collection has any elements with the **hasItems** property 
+```swift
+enum CellType {
+
+  case section(String)
+  case separator
+
+}
+
+let array: [CellType] = [
+  .section("One"),
+  .section("Two"),
+  .section("Three")
+].gr.separated(by: .separator)
+```
+
+Output
+```none
+array: .section("One"), .separator, .section("Two"), .separator, .section("Three")
+```
+
+#### contains
+Returns true if array contains item with specified index, otherwise returns false.
+
+```swift
+[1, 2, 3, 4].contains(index: 5)
+[1, 2, 3, 4].contains(index: 4)
+```
+
+Output
+
+```none
+FALSE
+TRUE
+```
+
+#### hasItems
+
+Returns if Collection has any elements
+```swift
+[1, 2, 3, 4].hasItems
+[].hasItems
+```
+
+Output
+
+```none
+TRUE
+FALSE
+```
 
 Functions for collection operations:
 
@@ -99,14 +147,14 @@ Functions for collection operations:
 - **chunked**
 - **removedDuplicates**
 - **prepending**
-- **swaped**
+- **swapped**
 
 Safely ask for item at index using the **safe** subscript
 
 ### CGAffineTransforms
 Create a transform with scale, translation and anchor in place with the **create** function
 
-### Data 
+### Data
 Creates string from hex data format **hexString**
 
 ### Date
@@ -123,7 +171,7 @@ Instantiate storyboard from view controller typename with the **instantiateViewC
 
 ### Lossy Codable Array
 Property wrapper that does compact map on top of an array value. Default empty array
-```
+```swift
 @LossyCodableArray<Widget> var widgets: [Widget]
 ```
 
@@ -138,7 +186,7 @@ Create a horizontal layout group for Compositional Layout with the **horizontalW
 
 ### NameDescribable
 Extracts typename from Collection, NSObject or Enum
-```
+```swift
 public protocol NameDescribable {
 
     var typeName: String { get }
@@ -157,7 +205,7 @@ Create alert menu to open Coordinates via different maps with the **create** fun
 get status bar frame with **currentStatusBarFrame** property
 
 open URL of Type with predefines URLType
-```
+```swift
 public enum UIApplicationUrlType {
 
     case instagramMedia(id: String)
@@ -174,7 +222,7 @@ Animate cell selection shrinking it when selected for 0.2 seconds with the **ani
 ### UIColor
 Create UIColor from 3 equal RGB values or try parse color from hex with our **color** functions
 
-### UIDatePicker 
+### UIDatePicker
 **dateBinding** computed property for observing datepicker values
 
 ### UIDevice
@@ -183,17 +231,17 @@ get info about the device  with **deviceId**, **deviceSystem**, **deviceName** a
 ### UILabel
 Computed property **isTruncated** checks if intrisic with is wider than bounds
 
-### UINavigationController 
+### UINavigationController
 Push into navigation view controller with completion with the **pushViewController** function
 
 ### UIScrollView
 Computed property **isRefreshing** cheecks if any refreshing controll is available check if its refreshing
 
 ### UIView
-Nib loading for initialization through constructor with the **loadNib** function 
+Nib loading for initialization through constructor with the **loadNib** function
 A list of IBInspectable attributes for UIView
 - **cornerRadius**
-- **borderColor** 
+- **borderColor**
 - **borderWidth**
 - **masksToBounds**
 - **shadowOpacity**
@@ -203,7 +251,7 @@ A list of IBInspectable attributes for UIView
 
 Shake the view repeatedly with the **shakeView**
 Rotate view by given Rotate Options
-```
+```swift
 enum Rotate {
 
     case by0
@@ -218,7 +266,7 @@ with the **rotate**
 
 Animate view fading with the **animate** function
 
-Clip corner radius to exact half with the **circleMaskImage** function 
+Clip corner radius to exact half with the **circleMaskImage** function
 Blur view beautifuly blur and unblur with the **blur** and **unblur** functions.
 
 ### URL
@@ -231,12 +279,12 @@ Embed view controller into container with the **embed** function or make instanc
 Extends the combine framework by some convenient events that help you build a reactive app
 
 ### UIControll:
-A publisher for tapping the UIControll items. 
+A publisher for tapping the UIControll items.
 ### Sample:
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 lazy var buttonPublisher = showAllMatchesButton.gr.publisher(for: .touchUpInside)
     .mapToVoid()
     .erased()
@@ -244,13 +292,13 @@ lazy var buttonPublisher = showAllMatchesButton.gr.publisher(for: .touchUpInside
 </details>
 
 ### BarButtonItem:
-A publisher for tapping the bar button items. 
+A publisher for tapping the bar button items.
 
 ### Sample:
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 sortButton.gr.tapPublisher
     .sink { [weak self] _ in
         guard let self = self else { return }
@@ -276,10 +324,10 @@ Assign operator alows you to set key in the given object path
 Nwise combine operator for when native operators aren't enough
 
 ## GoodReactor
-Goodreactor is an adaptation of the Reactor framework that is Redux inspired. 
+Goodreactor is an adaptation of the Reactor framework that is Redux inspired.
 The view model communicates with the view controller via the State and with the Coordinator via the navigation function.
 You communicate to the viewModel via Actions
-Viewmodel changes state in the Reduce function 
+Viewmodel changes state in the Reduce function
 Viewmodel interactes with dependencies outside of the Reduce function not to create side-effects
 
 Link to the original reactor kit: https://github.com/ReactorKit/ReactorKit
@@ -288,7 +336,7 @@ Link to the original reactor kit: https://github.com/ReactorKit/ReactorKit
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 import Foundation
 import Combine
 
@@ -402,7 +450,7 @@ private extension LoginViewModel {
 }
 ```
 With a login viewModel like this you receive values in the viewController binding yourself like this.
-```
+```swift
 func bindState(reactor: LoginViewModel) {
     reactor.state
         .map { $0.loginResult }
@@ -413,7 +461,7 @@ func bindState(reactor: LoginViewModel) {
 }
 ```
 And the coordinator navigation looks like this
-```
+```swift
 import UIKit
 import Combine
 
@@ -498,7 +546,7 @@ Contains our GRSession that works with GREndpointManager and GRCodable and DataR
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 import Foundation
 import Alamofire
 import Combine
@@ -577,8 +625,8 @@ class UserRequestManager: UserRequestManagerType {
 }
 
 ```
-And then inside your viewModel just call 
-```
+And then inside your viewModel just call
+```swift
 fetchProfile(requestManager: requestManager, id: id, appSpace: appSpace),
 ```
 The result is a publisher so you can continue chaining Combine functions.
@@ -593,7 +641,7 @@ Either represents a value of one of two possible types (a disjoint union).
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 var queryParameters: Either<Parameters, GREncodable>? {
     switch self {
     case .login:
@@ -603,7 +651,7 @@ var queryParameters: Either<Parameters, GREncodable>? {
                 "appSpace": AppSpace.defaultAppSpace
             ]
         )
-        
+
      default:
         return nil
     }
@@ -618,7 +666,7 @@ Makes it available to set properties with closures just after initializing.
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 surnameLabel.then {
     $0.font = AC.DynamicFont.largeTitle
     $0.textColor = Color.blueDark.color
@@ -633,7 +681,7 @@ Empty codable equatable and error struct
 <details>
 <summary>Click to expand!</summary>
 
-```
+```swift
 func resetPassword(
     requestManager: RequestManagerType,
     email: String
@@ -651,7 +699,7 @@ func resetPassword(
 ## Installation
 ### Swift Package Manager
 
-Create a `Package.swift` file and add the package dependency into the dependencies list. 
+Create a `Package.swift` file and add the package dependency into the dependencies list.
 Or to integrate without package.swift add it through the Xcode add package interface.
 
 ```swift
