@@ -64,7 +64,7 @@ public extension GRActive where Base: Collection {
         return muttableArray
     }
 
-    func swaped<Element: Equatable>(from startIndex: Base.Index, to endIndex: Base.Index) -> [Element] where Base == [Element] {
+    func swapped<Element: Equatable>(from startIndex: Base.Index, to endIndex: Base.Index) -> [Element] where Base == [Element] {
         var muttableArray = base
         muttableArray.swap(from: startIndex, to: endIndex)
         return muttableArray
