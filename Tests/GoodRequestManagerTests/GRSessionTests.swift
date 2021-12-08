@@ -45,7 +45,7 @@ final class GRSessionTests: XCTestCase {
 
     func testGRSession() {
         let session = GRSession<Endpoint, Base>(configuration: .default, baseURL: .base)
-        assert(true)
+        XCTAssert(true)
     }
 
 }
