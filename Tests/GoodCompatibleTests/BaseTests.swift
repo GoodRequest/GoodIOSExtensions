@@ -4,7 +4,7 @@ import GRCompatible
 final class BaseTests: XCTestCase {
 
     func testBaseType() {
-        assert("Hello".gr.base != nil)
+        XCTAssert("Hello".gr.base != nil)
     }
 
 }
