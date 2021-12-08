@@ -191,7 +191,7 @@ public enum GRResult<V, E> {
 
     public var isFailure: Bool {
         switch self {
-        case .success:
+        case .failure:
             return true
 
         default:
