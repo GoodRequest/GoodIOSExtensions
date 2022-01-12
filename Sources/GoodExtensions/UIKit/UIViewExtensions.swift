@@ -54,7 +54,15 @@ public extension GRActive where Base: UIView {
 
 public extension GRActive where Base: UIView {
 
+    @available(*, deprecated, message: "Deprecated, use circleMasked() instead")
     var circleMaskImage: UIView {
+        base.clipsToBounds = true
+        base.layer.cornerRadius = base.frame.width / 2.0
+        return base
+    }
+
+    @discardableResult
+    func circleMasked() -> UIView {
         base.clipsToBounds = true
         base.layer.cornerRadius = base.frame.width / 2.0
         return base
