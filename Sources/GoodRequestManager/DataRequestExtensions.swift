@@ -1,8 +1,8 @@
 //
 //  DataProviderExtensions.swift
-//  sfzfans
 //
-//  Copyright © 2020 GoodRequest. All rights reserved.
+//
+//  Created by Dominik Pethö on 4/30/19.
 //
 
 import Foundation
