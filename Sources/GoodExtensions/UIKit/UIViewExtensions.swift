@@ -12,12 +12,16 @@ import GRCompatible
 
 // MARK: - Initialization from XIB
 
-public extension GRActive where Base: UIView {
-
+public extension UIView {
+    
     static func loadFromNib() -> Self {
-        return loadNib(Base.self)
+        return GRActive.loadNib(self)
     }
+    
+}
 
+public extension GRActive where Base: UIView {
+    
     static func loadNib<A>(_ owner: AnyObject, bundle: Bundle = Bundle.main) -> A {
         guard let nibName = NSStringFromClass(Base.classForCoder()).components(separatedBy: ".").last else {
             fatalError("Class name [\(NSStringFromClass(Base.classForCoder()))] has no components.")
