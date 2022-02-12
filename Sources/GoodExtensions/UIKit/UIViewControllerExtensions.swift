@@ -52,3 +52,14 @@ public extension GRActive where Base: UIViewController {
     
 }
 
+public extension GRActive where Base: UIViewController {
+
+    func toggleStatusBarStyle(isDarkContent: Bool) {
+        if let navigationController = base.navigationController as? UINavigationController {
+            navigationController.preferredStatusBarStyle = isDarkContent ? .lightContent : .darkContent
+            
+            base.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+}
