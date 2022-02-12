@@ -9,6 +9,7 @@
 
 import UIKit
 import GRCompatible
+import CoreGraphics
 
 // MARK: - Initialization from XIB
 
@@ -48,6 +49,21 @@ public extension GRActive where Base: UIView {
         )
     }
 
+}
+
+public extension GRActive where Base: UIView {
+
+    func animatePress(_ pressed: Bool, downScale: CGFloat = 0.05) {
+        UIView.animate(
+            withDuration: 0.2,
+            delay: 0.0,
+            options: [.beginFromCurrentState, .curveEaseOut]
+        ) {
+            let scale = (1.0 - downScale)
+            base.transform = pressed ? CGAffineTransform(scaleX: scale, y: scale) : .identity
+        }
+    }
+    
 }
 
 // MARK: - Mask rendering
