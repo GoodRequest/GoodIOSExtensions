@@ -609,7 +609,7 @@ class UserRequestManager: UserRequestManagerType {
         session = GRSession(
             configuration: .default,
             baseURL: baseURL,
-            interceptor: SFZRequestInterceptor(cache: cache)
+            interceptor: RequestInterceptor(cache: cache)
         )
         self.cache = cache
     }
@@ -618,7 +618,7 @@ class UserRequestManager: UserRequestManagerType {
 
     func fetchProfile() -> AnyPublisher<ProfileResponse, AFError> {
         return session.request(endpoint: .profile)
-            .validateToSFZError()
+            .validateToCustomError()
             .goodify()
     }
 
