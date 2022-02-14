@@ -6,8 +6,6 @@
 //  Copyright © 2022 GoodRequest. All rights reserved.
 //
 
-import Foundation
-
 /// Add respective binary-equivalent operations to bitset type
 public extension OptionSet {
     
