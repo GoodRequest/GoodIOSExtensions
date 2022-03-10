@@ -1,9 +1,8 @@
 //
 //  LossyCodableList.swift
-//  sfzfans
+//
 //
 //  Created by Andrej Jasso on 16/06/2021.
-//  Copyright © 2021 GoodRequest. All rights reserved.
 //
 
 import Foundation

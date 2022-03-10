@@ -10,15 +10,20 @@
 import UIKit
 import GRCompatible
 import GoodStructs
+import CoreGraphics
 
 // MARK: - Initialization from XIB
 
-public extension GRActive where Base: UIView {
-
+public extension UIView {
+    
     static func loadFromNib() -> Self {
-        return loadNib(Base.self)
+        return GRActive.loadNib(self)
     }
+    
+}
 
+public extension GRActive where Base: UIView {
+    
     static func loadNib<A>(_ owner: AnyObject, bundle: Bundle = Bundle.main) -> A {
         guard let nibName = NSStringFromClass(Base.classForCoder()).components(separatedBy: ".").last else {
             fatalError("Class name [\(NSStringFromClass(Base.classForCoder()))] has no components.")
@@ -255,35 +260,60 @@ public extension GRActive where Base: UIView {
 
 }
 
-// MARK: - Blur
+
+// MARK: - Blurring
 
 public extension GRActive where Base: UIView {
+    
+    private final class BlurredImageView: UIImageView, NameDescribable {}
 
-    func blur(_ blurRadius: Double = 3.5) {
-        unblur()
+    func blur(_ blurRadius: Double = 3.5, animated: Bool = false, duration: CGFloat = 0.3) {
+        removeBlur()
         guard let blurredImage = createBlurryImage(blurRadius) else {
             return
         }
 
-        let blurredImageView = UIImageView(image: blurredImage)
+        let blurredImageView = BlurredImageView(image: blurredImage)
         blurredImageView.translatesAutoresizingMaskIntoConstraints = false
-        blurredImageView.tag = -419
         blurredImageView.contentMode = .center
         blurredImageView.backgroundColor = .clear
 
+        blurredImageView.alpha = 0
+        
         base.addSubview(blurredImageView)
+        
         NSLayoutConstraint.activate([
             blurredImageView.centerXAnchor.constraint(equalTo: base.centerXAnchor),
             blurredImageView.centerYAnchor.constraint(equalTo: base.centerYAnchor)
         ])
+
+        if animated {
+            UIView.animate(withDuration: duration) {
+                blurredImageView.alpha = 1
+            }
+        } else {
+            blurredImageView.alpha = 1
+        }
     }
 
-    func unblur() {
-        base.subviews.forEach {
-            if $0.tag == -419 {
-                $0.removeFromSuperview()
-                base.layoutSubviews()
-            }
+    func removeBlur(animated: Bool = false, duration: CGFloat = 0.3) {
+        guard let blurredImageView = firstSubview(forType: BlurredImageView.self) else {
+            return
+        }
+
+        if animated {
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    blurredImageView.alpha = 0
+                },
+                completion: { [weak base] _ in
+                    blurredImageView.removeFromSuperview()
+                }
+            )
+        } else {
+            blurredImageView.alpha = 0
+            blurredImageView.removeFromSuperview()
         }
     }
 
@@ -402,6 +432,122 @@ public extension GRActive where Base: UIView {
     func removeGradientLayerWithDirection(direction: GradientDirection) {
         base.layer.sublayers?
             .first { $0.name?.contains(direction.id) ?? false }?.removeFromSuperlayer()
+    }
+
+}
+
+// MARK: - Dimming
+
+public extension GRActive where Base: UIView {
+
+    private final class DimView: UIView {
+
+        init(intensity alpha: CGFloat = 0.3) {
+            super.init(frame: .zero)
+
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = .black.withAlphaComponent(alpha)
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        func changeIntensity(_ alpha: CGFloat) {
+            backgroundColor = .black.withAlphaComponent(alpha)
+        }
+
+    }
+
+    func dim(intensity alpha: CGFloat = 0.3, animated: Bool = false, duration: CGFloat = 0.3) {
+        removeDim()
+        let dimView = DimView(intensity: 0)
+
+        base.addSubview(dimView)
+        NSLayoutConstraint.activate([
+            dimView.topAnchor.constraint(equalTo: base.topAnchor),
+            dimView.leadingAnchor.constraint(equalTo: base.leadingAnchor),
+            dimView.trailingAnchor.constraint(equalTo: base.trailingAnchor),
+            dimView.bottomAnchor.constraint(equalTo: base.bottomAnchor)
+        ])
+
+        if animated {
+            UIView.animate(withDuration: duration) {
+                dimView.changeIntensity(alpha)
+            }
+        } else {
+            dimView.changeIntensity(alpha)
+        }
+    }
+
+    func removeDim(animated: Bool = false, duration: CGFloat = 0.3) {
+        let dimView = base.gr.firstSubview(forType: DimView.self)
+        if animated {
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    dimView?.changeIntensity(0)
+                },
+                completion: { [weak base] _ in
+                    dimView?.removeFromSuperview()
+                }
+            )
+        } else {
+            dimView?.changeIntensity(0)
+            dimView?.removeFromSuperview()
+        }
+    }
+
+}
+
+// MARK: - Blurring
+
+extension UIView {
+
+    func createBlurryImage(_ blurRadius: Double) -> UIImage? {
+        UIGraphicsBeginImageContext(bounds.size)
+        guard let currentContext = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        layer.render(in: currentContext)
+        guard let image = UIGraphicsGetImageFromCurrentImageContext(),
+            let blurFilter = CIFilter(name: "CIGaussianBlur") else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+        UIGraphicsEndImageContext()
+
+        blurFilter.setDefaults()
+
+        blurFilter.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+        blurFilter.setValue(blurRadius, forKey: kCIInputRadiusKey)
+
+        var convertedImage: UIImage?
+        let context = CIContext(options: nil)
+        if let blurOutputImage = blurFilter.outputImage,
+            let cgImage = context.createCGImage(blurOutputImage, from: blurOutputImage.extent) {
+            convertedImage = UIImage(cgImage: cgImage)
+        }
+
+        return convertedImage
+    }
+
+}
+
+// MARK: - Subview search
+
+public extension GRActive where Base: UIView {
+
+    func firstSubview<T>(forType type: T.Type) -> T? {
+        for subview in base.subviews where subview is T {
+            return subview as? T
+        }
+
+        var searchedView: T?
+        for subview in base.subviews {
+            searchedView = subview.gr.firstSubview(forType: type)
+        }
+        return searchedView
     }
 
 }
