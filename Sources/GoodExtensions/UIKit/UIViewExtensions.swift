@@ -9,6 +9,7 @@
 
 import UIKit
 import GRCompatible
+import GoodStructs
 import CoreGraphics
 
 // MARK: - Initialization from XIB
@@ -342,6 +343,95 @@ public extension GRActive where Base: UIView {
         }
 
         return convertedImage
+    }
+
+}
+
+// MARK: - Layer
+
+public extension GRActive where Base: UIView {
+
+    enum GradientDirection {
+
+        case leftToRight
+        case rightToLeft
+        case topToBottom
+        case bottomToTop
+        case custom(startPoint: CGPoint, endPoint: CGPoint, id: String? = nil)
+
+        var id: String {
+            switch self {
+            case .bottomToTop:
+                return "GRGradientLayer_BottomToTop"
+            case .leftToRight:
+                return "GRGradientLayer_LeftToRight"
+            case .rightToLeft:
+                return "GRGradientLayer_RightToLeft"
+
+            case .topToBottom:
+                return "GRGradientLayer_TopToBottom"
+
+            case .custom(_, _, let id):
+                let id = id ?? "Default"
+                return "GRGradientLayer_\(id)"
+            }
+        }
+    }
+
+    func setGradientLayerInForeground(colors: [UIColor], locations: [NSNumber] = [0, 1], direction: GradientDirection) {
+        base.layer.sublayers?
+            .filter { $0.name == direction.id }
+            .forEach { $0.removeFromSuperlayer() }
+        
+        let gradientLayer = base.layer as? CAGradientLayer ?? CAGradientLayer().then {
+            $0.name = direction.id
+            $0.frame = base.bounds
+            $0.colors = colors.map { $0.cgColor }
+            $0.locations = locations
+            $0.cornerRadius = base.cornerRadius
+
+            switch direction {
+            case .topToBottom:
+                $0.startPoint = CGPoint(x: 0.0, y: 1.0)
+                $0.endPoint = CGPoint(x: 1.0, y: 1.0)
+
+            case .leftToRight:
+                $0.startPoint = CGPoint(x: 0.0, y: 0.5)
+                $0.endPoint = CGPoint(x: 1.0, y: 0.5)
+
+            case .rightToLeft:
+                $0.startPoint = CGPoint(x: 1.0, y: 0.5)
+                $0.endPoint = CGPoint(x: 0.0, y: 0.5)
+
+            case .bottomToTop:
+                $0.startPoint = CGPoint(x: 0.5, y: 1.0)
+                $0.endPoint = CGPoint(x: 0.5, y: 0.0)
+
+            case .custom(let startPoint, let endPoint, _):
+                $0.startPoint = startPoint
+                $0.endPoint = endPoint
+            }
+        }
+        base.layer.insertSublayer(gradientLayer, at: .zero)
+    }
+    
+    func removeAllGradientLayersInForeground() {
+        base.layer.sublayers?
+            .filter { $0.name?.contains("GRGradientLayer_") ?? false }
+            .forEach { $0.removeFromSuperlayer() }
+    }
+    
+    func updateGradientLayer(direction: GradientDirection, colors: [UIColor], locations: [NSNumber] = [0, 1]) {
+        let layer = base.layer.sublayers?
+            .first { $0.name?.contains(direction.id) ?? false } as? CAGradientLayer
+        
+        layer?.colors = colors.map { $0.cgColor }
+        layer?.locations = locations
+    }
+    
+    func removeGradientLayerWithDirection(direction: GradientDirection) {
+        base.layer.sublayers?
+            .first { $0.name?.contains(direction.id) ?? false }?.removeFromSuperlayer()
     }
 
 }
