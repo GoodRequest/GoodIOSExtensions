@@ -9,15 +9,21 @@
 
 import UIKit
 import GRCompatible
+import GoodStructs
+import CoreGraphics
 
 // MARK: - Initialization from XIB
 
-public extension GRActive where Base: UIView {
-
+public extension UIView {
+    
     static func loadFromNib() -> Self {
-        return loadNib(Base.self)
+        return GRActive.loadNib(self)
     }
+    
+}
 
+public extension GRActive where Base: UIView {
+    
     static func loadNib<A>(_ owner: AnyObject, bundle: Bundle = Bundle.main) -> A {
         guard let nibName = NSStringFromClass(Base.classForCoder()).components(separatedBy: ".").last else {
             fatalError("Class name [\(NSStringFromClass(Base.classForCoder()))] has no components.")
@@ -54,7 +60,15 @@ public extension GRActive where Base: UIView {
 
 public extension GRActive where Base: UIView {
 
+    @available(*, deprecated, message: "Deprecated, use circleMasked() instead")
     var circleMaskImage: UIView {
+        base.clipsToBounds = true
+        base.layer.cornerRadius = base.frame.width / 2.0
+        return base
+    }
+
+    @discardableResult
+    func circleMasked() -> UIView {
         base.clipsToBounds = true
         base.layer.cornerRadius = base.frame.width / 2.0
         return base
@@ -254,35 +268,60 @@ public extension GRActive where Base: UIView {
 
 }
 
-// MARK: - Blur
+
+// MARK: - Blurring
 
 public extension GRActive where Base: UIView {
+    
+    private final class BlurredImageView: UIImageView, NameDescribable {}
 
-    func blur(_ blurRadius: Double = 3.5) {
-        unblur()
+    func blur(_ blurRadius: Double = 3.5, animated: Bool = false, duration: CGFloat = 0.3) {
+        removeBlur()
         guard let blurredImage = createBlurryImage(blurRadius) else {
             return
         }
 
-        let blurredImageView = UIImageView(image: blurredImage)
+        let blurredImageView = BlurredImageView(image: blurredImage)
         blurredImageView.translatesAutoresizingMaskIntoConstraints = false
-        blurredImageView.tag = -419
         blurredImageView.contentMode = .center
         blurredImageView.backgroundColor = .clear
 
+        blurredImageView.alpha = 0
+        
         base.addSubview(blurredImageView)
+        
         NSLayoutConstraint.activate([
             blurredImageView.centerXAnchor.constraint(equalTo: base.centerXAnchor),
             blurredImageView.centerYAnchor.constraint(equalTo: base.centerYAnchor)
         ])
+
+        if animated {
+            UIView.animate(withDuration: duration) {
+                blurredImageView.alpha = 1
+            }
+        } else {
+            blurredImageView.alpha = 1
+        }
     }
 
-    func unblur() {
-        base.subviews.forEach {
-            if $0.tag == -419 {
-                $0.removeFromSuperview()
-                base.layoutSubviews()
-            }
+    func removeBlur(animated: Bool = false, duration: CGFloat = 0.3) {
+        guard let blurredImageView = firstSubview(forType: BlurredImageView.self) else {
+            return
+        }
+
+        if animated {
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    blurredImageView.alpha = 0
+                },
+                completion: { [weak base] _ in
+                    blurredImageView.removeFromSuperview()
+                }
+            )
+        } else {
+            blurredImageView.alpha = 0
+            blurredImageView.removeFromSuperview()
         }
     }
 
@@ -316,3 +355,207 @@ public extension GRActive where Base: UIView {
 
 }
 
+// MARK: - Layer
+
+public extension GRActive where Base: UIView {
+
+    enum GradientDirection {
+
+        case leftToRight
+        case rightToLeft
+        case topToBottom
+        case bottomToTop
+        case custom(startPoint: CGPoint, endPoint: CGPoint, id: String? = nil)
+
+        var id: String {
+            switch self {
+            case .bottomToTop:
+                return "GRGradientLayer_BottomToTop"
+            case .leftToRight:
+                return "GRGradientLayer_LeftToRight"
+            case .rightToLeft:
+                return "GRGradientLayer_RightToLeft"
+
+            case .topToBottom:
+                return "GRGradientLayer_TopToBottom"
+
+            case .custom(_, _, let id):
+                let id = id ?? "Default"
+                return "GRGradientLayer_\(id)"
+            }
+        }
+    }
+
+    func setGradientLayerInForeground(colors: [UIColor], locations: [NSNumber] = [0, 1], direction: GradientDirection) {
+        base.layer.sublayers?
+            .filter { $0.name == direction.id }
+            .forEach { $0.removeFromSuperlayer() }
+        
+        let gradientLayer = base.layer as? CAGradientLayer ?? CAGradientLayer().then {
+            $0.name = direction.id
+            $0.frame = base.bounds
+            $0.colors = colors.map { $0.cgColor }
+            $0.locations = locations
+            $0.cornerRadius = base.cornerRadius
+
+            switch direction {
+            case .topToBottom:
+                $0.startPoint = CGPoint(x: 0.0, y: 1.0)
+                $0.endPoint = CGPoint(x: 1.0, y: 1.0)
+
+            case .leftToRight:
+                $0.startPoint = CGPoint(x: 0.0, y: 0.5)
+                $0.endPoint = CGPoint(x: 1.0, y: 0.5)
+
+            case .rightToLeft:
+                $0.startPoint = CGPoint(x: 1.0, y: 0.5)
+                $0.endPoint = CGPoint(x: 0.0, y: 0.5)
+
+            case .bottomToTop:
+                $0.startPoint = CGPoint(x: 0.5, y: 1.0)
+                $0.endPoint = CGPoint(x: 0.5, y: 0.0)
+
+            case .custom(let startPoint, let endPoint, _):
+                $0.startPoint = startPoint
+                $0.endPoint = endPoint
+            }
+        }
+        base.layer.insertSublayer(gradientLayer, at: .zero)
+    }
+    
+    func removeAllGradientLayersInForeground() {
+        base.layer.sublayers?
+            .filter { $0.name?.contains("GRGradientLayer_") ?? false }
+            .forEach { $0.removeFromSuperlayer() }
+    }
+    
+    func updateGradientLayer(direction: GradientDirection, colors: [UIColor], locations: [NSNumber] = [0, 1]) {
+        let layer = base.layer.sublayers?
+            .first { $0.name?.contains(direction.id) ?? false } as? CAGradientLayer
+        
+        layer?.colors = colors.map { $0.cgColor }
+        layer?.locations = locations
+    }
+    
+    func removeGradientLayerWithDirection(direction: GradientDirection) {
+        base.layer.sublayers?
+            .first { $0.name?.contains(direction.id) ?? false }?.removeFromSuperlayer()
+    }
+
+}
+
+// MARK: - Dimming
+
+public extension GRActive where Base: UIView {
+
+    private final class DimView: UIView {
+
+        init(intensity alpha: CGFloat = 0.3) {
+            super.init(frame: .zero)
+
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = .black.withAlphaComponent(alpha)
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        func changeIntensity(_ alpha: CGFloat) {
+            backgroundColor = .black.withAlphaComponent(alpha)
+        }
+
+    }
+
+    func dim(intensity alpha: CGFloat = 0.3, animated: Bool = false, duration: CGFloat = 0.3) {
+        removeDim()
+        let dimView = DimView(intensity: 0)
+
+        base.addSubview(dimView)
+        NSLayoutConstraint.activate([
+            dimView.topAnchor.constraint(equalTo: base.topAnchor),
+            dimView.leadingAnchor.constraint(equalTo: base.leadingAnchor),
+            dimView.trailingAnchor.constraint(equalTo: base.trailingAnchor),
+            dimView.bottomAnchor.constraint(equalTo: base.bottomAnchor)
+        ])
+
+        if animated {
+            UIView.animate(withDuration: duration) {
+                dimView.changeIntensity(alpha)
+            }
+        } else {
+            dimView.changeIntensity(alpha)
+        }
+    }
+
+    func removeDim(animated: Bool = false, duration: CGFloat = 0.3) {
+        let dimView = base.gr.firstSubview(forType: DimView.self)
+        if animated {
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    dimView?.changeIntensity(0)
+                },
+                completion: { [weak base] _ in
+                    dimView?.removeFromSuperview()
+                }
+            )
+        } else {
+            dimView?.changeIntensity(0)
+            dimView?.removeFromSuperview()
+        }
+    }
+
+}
+
+// MARK: - Blurring
+
+extension UIView {
+
+    func createBlurryImage(_ blurRadius: Double) -> UIImage? {
+        UIGraphicsBeginImageContext(bounds.size)
+        guard let currentContext = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        layer.render(in: currentContext)
+        guard let image = UIGraphicsGetImageFromCurrentImageContext(),
+            let blurFilter = CIFilter(name: "CIGaussianBlur") else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+        UIGraphicsEndImageContext()
+
+        blurFilter.setDefaults()
+
+        blurFilter.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+        blurFilter.setValue(blurRadius, forKey: kCIInputRadiusKey)
+
+        var convertedImage: UIImage?
+        let context = CIContext(options: nil)
+        if let blurOutputImage = blurFilter.outputImage,
+            let cgImage = context.createCGImage(blurOutputImage, from: blurOutputImage.extent) {
+            convertedImage = UIImage(cgImage: cgImage)
+        }
+
+        return convertedImage
+    }
+
+}
+
+// MARK: - Subview search
+
+public extension GRActive where Base: UIView {
+
+    func firstSubview<T>(forType type: T.Type) -> T? {
+        for subview in base.subviews where subview is T {
+            return subview as? T
+        }
+
+        var searchedView: T?
+        for subview in base.subviews {
+            searchedView = subview.gr.firstSubview(forType: type)
+        }
+        return searchedView
+    }
+
+}
