@@ -1,6 +1,6 @@
 //
-//  DateExtensions.swift
-//  GoodExtensions
+//  Date.swift
+//
 //
 //  Created by Andrej Jasso on 08/06/2021.
 //  Copyright © 2020 GoodRequest. All rights reserved.
