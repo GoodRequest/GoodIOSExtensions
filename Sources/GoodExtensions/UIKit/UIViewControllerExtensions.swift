@@ -53,36 +53,48 @@ public extension GRActive where Base: UIViewController {
     
 }
 
+public struct KeyboardInfo: Equatable {
+
+    public static func == (lhs: KeyboardInfo, rhs: KeyboardInfo) -> Bool {
+        return lhs.height == rhs.height
+    }
+
+    public let height: CGFloat
+    public let duration: Double
+    public let curve: UIView.AnimationOptions
+
+    public static let emptyInfo = KeyboardInfo(height: 0.0, duration: 0.0, curve: .curveEaseInOut)
+
+}
+
+public enum KeyboardState: Equatable {
+
+    case hidden(KeyboardInfo)
+    case expanded(KeyboardInfo)
+
+    public var isHidden: Bool {
+        if case KeyboardState.hidden = self {
+            return true
+        } else {
+            return false
+        }
+    }
+
+}
+
 public extension GRActive where Base: UIViewController {
 
-    struct KeyboardInfo: Equatable {
-
-        public static func == (lhs: KeyboardInfo, rhs: KeyboardInfo) -> Bool {
-            return lhs.height == rhs.height
-        }
-
-        let height: CGFloat
-        let duration: Double
-        let curve: UIView.AnimationCurve
-
-        static var emptyInfo: KeyboardInfo { KeyboardInfo(height: 0.0, duration: 0.0, curve: .linear) }
-
-    }
-
-    enum KeyboardState: Equatable {
-
-        case hidden(KeyboardInfo)
-        case expanded(KeyboardInfo)
-
-    }
-
     var keyboardStatePublisher: AnyPublisher<KeyboardState, Never> {
-        let showNotification = UIApplication.keyboardWillShowNotification
+        let showNotification = UIApplication.keyboardWillChangeFrameNotification
         let keyboardWillShowPublisher = NotificationCenter.default.publisher(for: showNotification)
             .map { keyboard -> KeyboardState in
                 let height = (keyboard.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height ?? 0
                 let duration = (keyboard.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.5
-                let curve = (keyboard.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UIView.AnimationCurve) ?? .linear
+                // swiftlint:disable line_length
+                let animationCurveRawNSN = keyboard.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+                let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+                let curve = UIView.AnimationOptions(rawValue: animationCurveRaw)
+                // swiftlint:enable line_length
                 let info = KeyboardInfo(height: height, duration: duration, curve: curve)
                 return .expanded(info)
             }
@@ -92,16 +104,28 @@ public extension GRActive where Base: UIViewController {
             .map { keyboard -> KeyboardState in
                 let height = 0.0
                 let duration = (keyboard.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? CGFloat) ?? 0.5
-                let curve = (keyboard.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UIView.AnimationCurve) ?? .linear
+                // swiftlint:disable line_length
+                let animationCurveRawNSN = keyboard.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+                let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+                let curve = UIView.AnimationOptions(rawValue: animationCurveRaw)
+                // swiftlint:enable line_length
                 let info = KeyboardInfo(height: height, duration: duration, curve: curve)
                 return .hidden(info)
             }
 
         return Publishers.Merge(keyboardWillShowPublisher, keyboardWillHidePublisher)
-            .debounce(for: .milliseconds(250), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 
-    var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> { keyboardStatePublisher.map { $0.height } }
+    var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
+        keyboardStatePublisher
+        .map {
+            switch $0 {
+            case .hidden(let info), .expanded(let info):
+                return info.height
+            }
+        }
+        .eraseToAnyPublisher()
+    }
     
 }
