@@ -171,7 +171,7 @@ public extension GoodReactor {
                 if let step = self.navigate(action: action) {
                     self.coordinator.step = step
                 }
-                return self.mutate(action: action).catch { _ in Empty() }.eraseToAnyPublisher()
+                return self.mutate(action: action).setFailureType(to: Never.self).eraseToAnyPublisher()
             }
         .eraseToAnyPublisher()
 
@@ -181,7 +181,7 @@ public extension GoodReactor {
                 guard let `self` = self else { return state }
                 return self.reduce(state: state, mutation: mutation)
             }
-            .catch { _ in Empty<Self.State, Never>().eraseToAnyPublisher() }
+            .setFailureType(to: Never.self)
             .prepend(self.initialState)
             .eraseToAnyPublisher()
 
