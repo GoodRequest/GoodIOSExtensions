@@ -53,7 +53,7 @@ let package = Package(
         ),
         .target(
             name: "GoodExtensions",
-            dependencies: [.target(name: "GRCompatible")]
+            dependencies: [.target(name: "GRCompatible"), .target(name: "GoodStructs")]
         ),
         .target(
             name: "GoodCombineExtensions",
