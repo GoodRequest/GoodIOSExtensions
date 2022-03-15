@@ -315,7 +315,7 @@ public extension GRActive where Base: UIView {
                 animations: {
                     blurredImageView.alpha = 0
                 },
-                completion: { [weak base] _ in
+                completion: { _ in
                     blurredImageView.removeFromSuperview()
                 }
             )
@@ -496,7 +496,7 @@ public extension GRActive where Base: UIView {
                 animations: {
                     dimView?.changeIntensity(0)
                 },
-                completion: { [weak base] _ in
+                completion: { _ in
                     dimView?.removeFromSuperview()
                 }
             )
