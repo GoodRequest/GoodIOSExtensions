@@ -7,65 +7,126 @@
 
 import Foundation
 import Alamofire
-import Combine
 
-public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where BaseURL.RawValue == String {
+open class GRSessionConfiguration {
 
-    private let session: Session
+    // MARK: - Enums
 
-    let baseURL: BaseURL
-    let configuration: URLSessionConfiguration
+    /// Log level enum
+    ///
+    /// error - prints only when error occurs
+    /// info - prints request url with response status and error when occurs
+    /// verbose - prints everything including request body and response object
+    public enum GRSessionLogLevel {
+
+        case error
+        case info
+        case verbose
+        case none
+
+    }
+
+    // MARK: - Constants
+
+    let urlSessionConfiguration: URLSessionConfiguration
+    let interceptor: RequestInterceptor?
+    let serverTrustManager: ServerTrustManager?
+    let eventMonitors: [EventMonitor]
+
+    // MARK: - Initialization
 
     public init(
-        configuration: URLSessionConfiguration,
-        baseURL: BaseURL,
-        interceptor: RequestInterceptor? = nil,
-        serverTrustManager: ServerTrustManager? = nil
+        urlSessionConfiguration: URLSessionConfiguration,
+        interceptor: RequestInterceptor?,
+        serverTrustManager: ServerTrustManager?,
+        eventMonitors: [EventMonitor]
     ) {
-        self.baseURL = baseURL
+        self.urlSessionConfiguration = urlSessionConfiguration
+        self.interceptor = interceptor
+        self.serverTrustManager = serverTrustManager
+        self.eventMonitors = eventMonitors
+    }
+
+    // MARK: - Static
+
+    public static var logLevel: GRSessionLogLevel = .verbose
+    public static var configuration: GRSessionConfiguration = .default
+
+    public static let `default` = GRSessionConfiguration(
+        urlSessionConfiguration: .default,
+        interceptor: nil,
+        serverTrustManager: nil,
+        eventMonitors: [GRSessionLogger()]
+    )
+
+}
+
+open class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where BaseURL.RawValue == String {
+
+    // MARK: - Private
+
+    private let session: Session
+    private let baseURL: String
+    private let configuration: GRSessionConfiguration?
+
+    // MARK: - Public
+
+    public init(
+        baseURL: BaseURL,
+        configuration: GRSessionConfiguration = GRSessionConfiguration.configuration
+    ) {
+        self.baseURL = baseURL.rawValue
         self.configuration = configuration
 
         session = .init(
-            configuration: configuration,
-            interceptor: interceptor,
-            serverTrustManager: serverTrustManager
+            configuration: configuration.urlSessionConfiguration,
+            interceptor: configuration.interceptor,
+            serverTrustManager: configuration.serverTrustManager,
+            eventMonitors: configuration.eventMonitors
         )
     }
 
-    public func request(endpoint: T, base: BaseURL? = nil) -> DataRequest {
-        var path: URL? = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
-        var bodyData: [String: Any]?
+    public func dataRequest(endpoint: T, base: BaseURL? = nil) -> DataRequest {
+        let builder = endpointBuilder(endpoint: endpoint, base: base?.rawValue ?? baseURL)
 
-        switch endpoint.queryParameters {
-        case .left(let params)?:
-            let endpointURL = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
-            let urlComponent = NSURLComponents(
-                url: endpointURL ?? URL(fileURLWithPath: ""),
-                resolvingAgainstBaseURL: false
-            )
+        return session.request(
+            builder.url ?? URL(fileURLWithPath: ""),
+            method: endpoint.method,
+            parameters: builder.body,
+            encoding: endpoint.encoding,
+            headers: endpoint.headers
+        )
+    }
 
-            urlComponent?.queryItems = params.map {
-                URLQueryItem(name: $0.0, value: String(describing: $0.1))
-            }
-            path = urlComponent?.url
+}
 
-        case .right(let encodable)?:
-            let endpointURL = try? endpoint.asURL(baseURL: base?.rawValue ?? baseURL.rawValue)
-            let urlComponent = NSURLComponents(
-                url: endpointURL ?? URL(fileURLWithPath: ""),
-                resolvingAgainstBaseURL: false
-            )
+// MARK: - Download
 
-            urlComponent?.queryItems = encodable.jsonDictionary?.map {
-                let (key, value) = $0
-                return URLQueryItem(name: String(describing: key), value: String(describing: value))
-            }
+public extension GRSession {
 
-            path = urlComponent?.url
+    func download(endpoint: T, base: String? = nil, customFileName: String) -> DownloadRequest {
+        let builder = endpointBuilder(endpoint: endpoint, base: base)
 
-        default:
-            break
+        let destination: DownloadRequest.Destination = { temporaryURL, _ in
+            let directoryURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let url = directoryURLs.first?.appendingPathComponent(customFileName) ?? temporaryURL
+
+            return (url, [.removePreviousFile, .createIntermediateDirectories])
         }
+
+        return session.download(
+            builder.url ?? URL(fileURLWithPath: ""),
+            method: endpoint.method,
+            parameters: builder.body,
+            encoding: endpoint.encoding,
+            headers: endpoint.headers,
+            to: destination
+        )
+    }
+
+    func endpointBuilder(endpoint: T, base: String? = nil) -> (url: URL?, body: [String: Any]?) {
+        let path: URL? = try? endpoint.asURL(baseURL: base ?? baseURL)
+        var bodyData: [String: Any]?
 
         switch endpoint.parameters {
         case .left(let params)?:
@@ -78,13 +139,48 @@ public class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Ba
             break
         }
 
-        return session.request(
-            path ?? URL(fileURLWithPath: ""),
+        return (path, bodyData)
+    }
+
+}
+
+// MARK: - Upload
+
+public extension GRSession {
+
+    func uploadWithMultipart(
+        endpoint: GREndpointManager,
+        data: Data,
+        fileHeader: String = "file",
+        filename: String,
+        mimeType: String
+    ) -> UploadRequest {
+        return session.upload(
+            multipartFormData: {formData in
+                formData.append(data, withName: fileHeader, fileName: filename, mimeType: mimeType)
+            },
+            to: EndpointConvertible(endpoint: endpoint, baseURL: baseURL),
             method: endpoint.method,
-            parameters: bodyData,
-            encoding: endpoint.encoding,
             headers: endpoint.headers
         )
     }
+
+}
+
+public class EndpointConvertible: URLConvertible {
+
+    init(endpoint: GREndpointManager, baseURL: String) {
+        self.baseURL = baseURL
+        self.endpoint = endpoint
+    }
+
+    public func asURL() throws -> URL {
+        var url = try baseURL.asURL()
+        url.appendPathComponent(endpoint.path)
+        return url
+    }
+
+    let baseURL: String
+    let endpoint: GREndpointManager
 
 }
