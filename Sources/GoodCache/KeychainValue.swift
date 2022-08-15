@@ -34,8 +34,8 @@ public class KeychainValue<T: Codable> {
     public var wrappedValue: T {
         get {
             guard let data = KeychainWrapper.standard.data(
-                    forKey: key,
-                    withAccessibility: accessibility
+                forKey: key,
+                withAccessibility: accessibility
             ) else {
                 return defaultValue
             }
