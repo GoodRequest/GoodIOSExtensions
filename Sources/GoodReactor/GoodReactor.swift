@@ -22,33 +22,25 @@ open class GoodCoordinator<Step>: NSObject {
         self.parentCoordinator = parentCoordinator
     }
 
-    /**
-     Search for the first  matching coordinator in hierarchy
-        *   Need to setup parent coordinator to establish the coordiantor hierarchy
-    */
+    /// Search for the first matching coordinator in hierarchy
+    /// Need to setup parent coordinator to establish the coordinator hierarchy
     public func firstCoordinatorOfType<T>(type: T.Type) -> T? {
-        guard let parentCoordinator = parentCoordinator else {
-            return nil
-        }
-        if let parentCoordinator = parentCoordinator as? T {
-            return parentCoordinator
-        } else {
+        if let thisCoordinator = self as? T {
+            return thisCoordinator
+        } else if let parentCoordinator = parentCoordinator {
             return parentCoordinator.firstCoordinatorOfType(type: T.self)
         }
+        return nil
     }
 
-    /**
-     Search for the last  matching coordinator in hierarchy
-        *   Need to setup parent coordinator to establish the coordiantor hierarchy
-    */
-    public func lastCoordinatorOfType<T>(type: T.Type, lastMatch: T?) -> T? {
-        guard let parentCoordinator = parentCoordinator else {
-            return lastMatch
-        }
-        if let parentCoordinatorType = parentCoordinator as? T {
-            return parentCoordinator.lastCoordinatorOfType(type: T.self, lastMatch: parentCoordinatorType)
+    /// Search for the last matching coordinator in hierarchy
+    /// Need to setup parent coordinator to establish the coordinator hierarchy
+    public func lastCoordinatorOfType<T>(type: T.Type) -> T? {
+        if let parentCoordinator = parentCoordinator,
+           let lastResult = parentCoordinator.lastCoordinatorOfType(type: T.self) {
+            return lastResult
         } else {
-            return parentCoordinator.lastCoordinatorOfType(type: T.self, lastMatch: lastMatch)
+            return self as? T
         }
     }
 
