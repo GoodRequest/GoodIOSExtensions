@@ -22,8 +22,20 @@ public extension GRActive where Base: UIApplication {
 
     @available(iOS 13.0, *)
     var currentStatusBarFrame: CGRect? {
-        return base.windows.first { $0.isKeyWindow }?.windowScene?.statusBarManager?.statusBarFrame
+        return activeWindow?.windowScene?.statusBarManager?.statusBarFrame
     }
+
+    @available(iOS 13.0, *)
+    var activeWindow: UIWindow? {
+        UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .first { $0 is UIWindowScene }
+            .flatMap { $0 as? UIWindowScene }?
+            .windows
+            .first(where: \.isKeyWindow)
+    }
+
+    // MARK: - URL handling
 
     // swiftlint:disable force_unwrapping
     var canOpenInstagram: Bool {
