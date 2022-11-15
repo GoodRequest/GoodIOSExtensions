@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import GoodStructs
 
 open class GRSessionConfiguration {
 
@@ -36,10 +37,10 @@ open class GRSessionConfiguration {
     // MARK: - Initialization
 
     public init(
-        urlSessionConfiguration: URLSessionConfiguration,
-        interceptor: RequestInterceptor?,
-        serverTrustManager: ServerTrustManager?,
-        eventMonitors: [EventMonitor]
+        urlSessionConfiguration: URLSessionConfiguration = .default,
+        interceptor: RequestInterceptor? = nil,
+        serverTrustManager: ServerTrustManager? = nil,
+        eventMonitors: [EventMonitor] = []
     ) {
         self.urlSessionConfiguration = urlSessionConfiguration
         self.interceptor = interceptor
@@ -50,7 +51,6 @@ open class GRSessionConfiguration {
     // MARK: - Static
 
     public static var logLevel: GRSessionLogLevel = .verbose
-    public static var configuration: GRSessionConfiguration = .default
 
     public static let `default` = GRSessionConfiguration(
         urlSessionConfiguration: .default,

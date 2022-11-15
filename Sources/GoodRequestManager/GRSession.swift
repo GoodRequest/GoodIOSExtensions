@@ -20,7 +20,7 @@ open class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Base
 
     public init(
         baseURL: BaseURL,
-        configuration: GRSessionConfiguration = GRSessionConfiguration.configuration
+        configuration: GRSessionConfiguration = .default
     ) {
         self.baseURL = baseURL.rawValue
         self.configuration = configuration
@@ -33,7 +33,7 @@ open class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Base
         )
     }
 
-    public func dataRequest(endpoint: T, base: BaseURL? = nil) -> DataRequest {
+    public func request(endpoint: T, base: BaseURL? = nil) -> DataRequest {
         let builder = endpointBuilder(endpoint: endpoint, base: base?.rawValue ?? baseURL)
 
         return session.request(

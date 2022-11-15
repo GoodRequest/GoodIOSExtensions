@@ -33,7 +33,7 @@ open class GRImageDownloader {
     // MARK: - Public
 
     static func setupAuthorizedImageDownloader(
-        sessionConfiguration: GRSessionConfiguration = GRSessionConfiguration.configuration,
+        sessionConfiguration: GRSessionConfiguration = .default,
         downloaderConfiguration: GRImageDownloaderConfiguration
     ) {
         let imageDownloaderQueue = DispatchQueue(label: C.imageDownloaderDispatchQueueKey)
