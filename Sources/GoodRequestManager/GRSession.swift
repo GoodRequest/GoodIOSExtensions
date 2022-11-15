@@ -8,59 +8,6 @@
 import Foundation
 import Alamofire
 
-open class GRSessionConfiguration {
-
-    // MARK: - Enums
-
-    /// Log level enum
-    ///
-    /// error - prints only when error occurs
-    /// info - prints request url with response status and error when occurs
-    /// verbose - prints everything including request body and response object
-    public enum GRSessionLogLevel {
-
-        case error
-        case info
-        case verbose
-        case none
-
-    }
-
-    // MARK: - Constants
-
-    let urlSessionConfiguration: URLSessionConfiguration
-    let interceptor: RequestInterceptor?
-    let serverTrustManager: ServerTrustManager?
-    let eventMonitors: [EventMonitor]
-
-    // MARK: - Initialization
-
-    public init(
-        urlSessionConfiguration: URLSessionConfiguration,
-        interceptor: RequestInterceptor?,
-        serverTrustManager: ServerTrustManager?,
-        eventMonitors: [EventMonitor]
-    ) {
-        self.urlSessionConfiguration = urlSessionConfiguration
-        self.interceptor = interceptor
-        self.serverTrustManager = serverTrustManager
-        self.eventMonitors = eventMonitors
-    }
-
-    // MARK: - Static
-
-    public static var logLevel: GRSessionLogLevel = .verbose
-    public static var configuration: GRSessionConfiguration = .default
-
-    public static let `default` = GRSessionConfiguration(
-        urlSessionConfiguration: .default,
-        interceptor: nil,
-        serverTrustManager: nil,
-        eventMonitors: [GRSessionLogger()]
-    )
-
-}
-
 open class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where BaseURL.RawValue == String {
 
     // MARK: - Private
@@ -124,25 +71,8 @@ public extension GRSession {
         )
     }
 
-    func endpointBuilder(endpoint: T, base: String? = nil) -> (url: URL?, body: [String: Any]?) {
-        let path: URL? = try? endpoint.asURL(baseURL: base ?? baseURL)
-        var bodyData: [String: Any]?
-
-        switch endpoint.parameters {
-        case .left(let params)?:
-            bodyData = params
-
-        case .right(let encodable)?:
-            bodyData = encodable.jsonDictionary
-
-        default:
-            break
-        }
-
-        return (path, bodyData)
-    }
-
 }
+
 
 // MARK: - Upload
 
@@ -182,5 +112,29 @@ public class EndpointConvertible: URLConvertible {
 
     let baseURL: String
     let endpoint: GREndpointManager
+
+}
+
+// MARK: - Request Builder
+
+private extension GRSession {
+
+    func endpointBuilder(endpoint: T, base: String? = nil) -> (url: URL?, body: [String: Any]?) {
+        let path: URL? = try? endpoint.asURL(baseURL: base ?? baseURL)
+        var bodyData: [String: Any]?
+
+        switch endpoint.parameters {
+        case .left(let params)?:
+            bodyData = params
+
+        case .right(let encodable)?:
+            bodyData = encodable.jsonDictionary
+
+        default:
+            break
+        }
+
+        return (path, bodyData)
+    }
 
 }
