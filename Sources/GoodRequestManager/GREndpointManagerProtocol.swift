@@ -10,7 +10,6 @@ public protocol GREndpointManager {
 
     var path: String { get }
     var method: HTTPMethod { get }
-    var queryParameters: Either<Parameters, GREncodable>? { get }
     var parameters: Either<Parameters, GREncodable>? { get }
     var headers: HTTPHeaders? { get }
     var encoding: ParameterEncoding { get }
