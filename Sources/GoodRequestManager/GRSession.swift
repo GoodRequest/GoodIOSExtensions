@@ -12,7 +12,7 @@ open class GRSession<T: GREndpointManager, BaseURL: RawRepresentable> where Base
 
     // MARK: - Private
 
-    private let session: Session
+    public let session: Session
     private let baseURL: String
     private let configuration: GRSessionConfiguration?
 
